@@ -1,29 +1,39 @@
-# Volleyball 6–2 Rotation Guide — v5
+# 6–2 Volleyball Rotation Guide — v8
 
-Static HTML/CSS/JavaScript site designed for GitHub Pages.
+Static GitHub Pages volleyball teaching site with editable coach controls and optional Supabase cloud sync.
 
-## v5 updates
+## What v8 adds
 
-- Rotation 1 court positioning rebuilt from the coach's annotated reference.
-- Other rotations use the same role-based 6–2 logic as the lineup rotates.
-- Phase order is now: Serve → Serve Receive → Base → Outside Hit → Middle Hit → Right Side Hit → Free Ball.
-- Outside / Middle / Right Side modes now teach **team defense against the opponent hitter**, not your own hitter coverage.
-- Base puts all front-row players on the net, with left-side defense and setter at the 10-ft-line / sideline intersections.
-- Serve uses a compact legal-order stack and animates directly to Base.
-- Serve Receive hides the back-row setter and shows the pass/set target between the middle and right side.
-- Free Ball sends the setter to target and pulls the front row off the net for approaches.
-- Separate libero system: editable libero name plus Rotation 1–6 replacement selectors.
-- Libero uses a visually different navy/orange bubble.
-- DS / regular automatic substitution rules remain available.
-
-## Admin
-
-Open `admin.html`.
-
-Default PIN: `6262`
-
-Roster settings save in browser `localStorage`. Because GitHub Pages is static, edits on one device do not automatically sync to other devices.
+- Shared roster/config through Supabase
+- Coach PIN verified by Supabase when cloud sync is connected
+- Player view automatically checks for roster updates every ~15 seconds
+- Names, positions, DS substitutions, libero name, and libero rotation assignments all stay synchronized across devices
+- Existing browser lineup can be uploaded the first time Supabase is connected
+- LocalStorage remains as a fast/offline fallback
 
 ## GitHub Pages
 
-Upload the files in this folder to the root of your GitHub repository and keep Pages set to `main` / `(root)`.
+Upload all files in this folder to the root of the `62Rotational` repository. GitHub Pages can continue deploying from `main` / `(root)`.
+
+## Supabase setup
+
+Read `SUPABASE_SETUP.md`, then:
+
+1. Run `supabase-schema.sql` once in Supabase SQL Editor.
+2. Put your Project URL and **publishable key** into `supabase-config.js`.
+3. Commit the updated files to GitHub.
+
+Default coach PIN created by the SQL setup: **6262**.
+
+Never put a Supabase secret/service_role key in a GitHub Pages site.
+
+
+## v8 change
+
+- Rotation 3 serving formation now places rotational Zone 5 in the middle stack, matching the coach markup.
+- Supabase shared-roster support remains included in this version.
+
+
+## Supabase connection
+
+This v8 build already has the provided Supabase Project URL and publishable browser key entered in `supabase-config.js`. You still need to run `supabase-schema.sql` once in the Supabase SQL Editor if the database schema has not been created yet.

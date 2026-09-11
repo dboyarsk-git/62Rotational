@@ -21,7 +21,7 @@
     <section id="pinGate" class="card pin-card">
       <p class="eyebrow">Admin Mode</p>
       <h2>Enter Coach PIN</h2>
-      <p>This is a convenience lock for a static GitHub Pages site.</p>
+      <p>When Supabase is connected, this PIN is verified by the shared database before any team changes can be saved.</p>
       <form id="pinForm" class="pin-form">
         <input id="pinInput" type="password" inputmode="numeric" autocomplete="off" placeholder="Coach PIN" />
         <button class="primary-btn" type="submit">Open Admin</button>
@@ -92,12 +92,14 @@
       </section>
 
       <section class="card admin-note">
-        <h3>GitHub Pages note</h3>
-        <p>This version saves edits in this browser with <code>localStorage</code>. The rotation, DS, and libero logic work immediately on this device, but an admin edit here does not automatically sync to every player’s phone. A shared database would be needed for that.</p>
+        <h3>Supabase cloud sync</h3>
+        <p>With <code>supabase-config.js</code> connected, Save Changes updates one shared team configuration in Supabase. The player page checks for updates automatically, so names, positions, DS rules, and libero assignments stay matched across phones and computers.</p>
       </section>
     </div>
   </main>
 
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase-config.js"></script>
   <script src="data.js"></script>
   <script src="admin.js"></script>
 </body>

@@ -1,4 +1,5 @@
 let config = loadConfig();
+let currentAdminPin = sessionStorage.getItem(ADMIN_PIN_SESSION_KEY) || "";
 
 const pinGate = document.getElementById("pinGate");
 const pinForm = document.getElementById("pinForm");
@@ -30,11 +31,47 @@ function roleOptions(selectedRole) {
   return ROLE_OPTIONS.map(([value, label]) => `<option value="${value}" ${selectedRole === value ? "selected" : ""}>${label}</option>`).join("");
 }
 
-function unlockAdmin() {
+async function unlockAdmin({ refreshCloud = true } = {}) {
   sessionStorage.setItem(ADMIN_SESSION_KEY, "true");
   pinGate.hidden = true;
   adminPanel.hidden = false;
   renderEditor();
+
+  if (refreshCloud && isSupabaseConfigured()) {
+    const localBeforeCloud = loadConfig();
+    showStatus("Loading shared roster from Supabase…");
+    const { data, error } = await loadConfigFromCloud();
+    if (data && !error) {
+      const clean = (value) => {
+        const copy = normalizeConfig(value);
+        delete copy.adminPin;
+        return JSON.stringify(copy);
+      };
+      const cloudIsSeedDemo = clean(data) === clean(cloneDefaultConfig());
+      const localHasEdits = clean(localBeforeCloud) !== clean(cloneDefaultConfig());
+
+      if (cloudIsSeedDemo && localHasEdits && currentAdminPin) {
+        const useLocal = window.confirm(
+          "I found an existing lineup saved on this browser, while Supabase still has the demo lineup. Upload your existing names/settings to Supabase?"
+        );
+        if (useLocal) {
+          const uploaded = await saveConfigToCloud(localBeforeCloud, currentAdminPin);
+          if (uploaded.data && !uploaded.error) {
+            config = uploaded.data;
+            renderEditor();
+            showStatus("Existing browser lineup uploaded to Supabase. It is now the shared roster.");
+            return;
+          }
+        }
+      }
+
+      config = data;
+      renderEditor();
+      showStatus("Cloud roster loaded. Changes here will sync to every device.");
+    } else if (error) {
+      showStatus(`Could not load cloud roster: ${error.message}`, true);
+    }
+  }
 }
 
 function renderEditor() {
@@ -173,10 +210,11 @@ function syncDraftFromInputs() {
 function showStatus(message, isError = false) {
   saveStatus.textContent = message;
   saveStatus.classList.toggle("error-text", isError);
-  setTimeout(() => {
+  clearTimeout(showStatus.timer);
+  showStatus.timer = setTimeout(() => {
     saveStatus.textContent = "";
     saveStatus.classList.remove("error-text");
-  }, 3200);
+  }, 4800);
 }
 
 function escapeAttribute(value) {
@@ -196,12 +234,33 @@ function escapeHtml(value) {
     .replaceAll("'", "&#039;");
 }
 
-pinForm.addEventListener("submit", (event) => {
+pinForm.addEventListener("submit", async (event) => {
   event.preventDefault();
+  const enteredPin = pinInput.value;
+  pinError.textContent = "";
+
+  if (isSupabaseConfigured()) {
+    pinError.textContent = "Checking PIN…";
+    const { ok, error } = await verifyAdminPinCloud(enteredPin);
+    if (ok) {
+      pinError.textContent = "";
+      currentAdminPin = enteredPin;
+      sessionStorage.setItem(ADMIN_PIN_SESSION_KEY, enteredPin);
+      await unlockAdmin();
+    } else {
+      pinError.textContent = error ? `Could not verify PIN: ${error.message}` : "Incorrect PIN.";
+      pinInput.select();
+    }
+    return;
+  }
+
+  // Local-only fallback before Supabase is connected.
   config = loadConfig();
-  if (pinInput.value === config.adminPin) {
+  if (enteredPin === config.adminPin) {
+    currentAdminPin = enteredPin;
+    sessionStorage.setItem(ADMIN_PIN_SESSION_KEY, enteredPin);
     pinError.textContent = "";
-    unlockAdmin();
+    await unlockAdmin({ refreshCloud: false });
   } else {
     pinError.textContent = "Incorrect PIN.";
     pinInput.select();
@@ -234,25 +293,77 @@ subsGrid.addEventListener("click", (event) => {
   renderSubs();
 });
 
-saveBtn.addEventListener("click", () => {
+async function saveCurrentDraftToSharedRoster() {
   syncDraftFromInputs();
-  saveConfig(config);
+
+  if (!isSupabaseConfigured()) {
+    saveConfig(config);
+    return { ok: true, cloud: false };
+  }
+
+  if (!currentAdminPin) return { ok: false, error: new Error("Please enter the coach PIN again.") };
+  const { data, error } = await saveConfigToCloud(config, currentAdminPin);
+  if (error || !data) return { ok: false, error: error || new Error("Cloud save failed.") };
+  config = data;
+  return { ok: true, cloud: true };
+}
+
+saveBtn.addEventListener("click", async () => {
+  saveBtn.disabled = true;
+  showStatus(isSupabaseConfigured() ? "Saving to Supabase…" : "Saving on this browser…");
+  const result = await saveCurrentDraftToSharedRoster();
+  saveBtn.disabled = false;
+
+  if (!result.ok) {
+    showStatus(`Save failed: ${result.error.message}`, true);
+    return;
+  }
+
   renderEditor();
-  showStatus("Saved! Names, DS rules, and libero rotation assignments are updated on this browser.");
+  showStatus(result.cloud
+    ? "Saved to Supabase! Player names, roles, subs, and libero assignments are now shared across devices."
+    : "Saved on this browser. Add your Supabase URL/key to turn on shared sync."
+  );
 });
 
-previewBtn.addEventListener("click", () => {
-  syncDraftFromInputs();
-  saveConfig(config);
+previewBtn.addEventListener("click", async () => {
+  previewBtn.disabled = true;
+  const result = await saveCurrentDraftToSharedRoster();
+  previewBtn.disabled = false;
+  if (!result.ok) {
+    showStatus(`Could not save before preview: ${result.error.message}`, true);
+    return;
+  }
   window.location.href = "index.html";
 });
 
-resetBtn.addEventListener("click", () => {
+resetBtn.addEventListener("click", async () => {
   const confirmed = window.confirm("Reset all names, positions, substitutions, and libero assignments to the demo lineup?");
   if (!confirmed) return;
-  saveConfig(cloneDefaultConfig());
+
+  const resetConfig = cloneDefaultConfig();
+  if (isSupabaseConfigured()) {
+    if (!currentAdminPin) {
+      showStatus("Please enter the coach PIN again before resetting.", true);
+      return;
+    }
+    const { data, error } = await saveConfigToCloud(resetConfig, currentAdminPin);
+    if (error || !data) {
+      showStatus(`Reset failed: ${error?.message || "Cloud save failed."}`, true);
+      return;
+    }
+  } else {
+    saveConfig(resetConfig);
+  }
+
   renderEditor();
-  showStatus("Demo lineup restored.");
+  showStatus(isSupabaseConfigured() ? "Demo lineup restored in Supabase." : "Demo lineup restored on this browser.");
 });
 
-if (sessionStorage.getItem(ADMIN_SESSION_KEY) === "true") unlockAdmin();
+if (sessionStorage.getItem(ADMIN_SESSION_KEY) === "true") {
+  if (!isSupabaseConfigured() || currentAdminPin) {
+    unlockAdmin();
+  } else {
+    sessionStorage.removeItem(ADMIN_SESSION_KEY);
+  }
+}

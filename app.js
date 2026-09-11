@@ -159,7 +159,7 @@ function buildControls() {
 }
 
 function coordsFor(entry, mode, activeCourt = []) {
-  if (mode === "serve") return getServeCoords(entry.zone);
+  if (mode === "serve") return getServeCoords(entry.zone, currentRotation);
   if (mode === "receive") return getServeReceiveCoords(entry, activeCourt);
   if (mode === "set") return getSetterReleaseCoords(entry);
   if (mode === "base") return getBaseCoords(entry);
@@ -449,3 +449,23 @@ receiveFlowBtn.addEventListener("click", runReceiveFlowAnimation);
 serveFlowBtn.addEventListener("click", runServeBaseAnimation);
 
 render();
+
+async function syncPlayerViewFromCloud() {
+  if (!isSupabaseConfigured()) return;
+  const before = JSON.stringify(loadConfig());
+  const { data, error } = await loadConfigFromCloud();
+  if (error || !data) return;
+  const after = JSON.stringify(data);
+  if (after !== before) {
+    config = data;
+    render();
+  }
+}
+
+// Load the shared roster immediately, then quietly check for coach edits.
+syncPlayerViewFromCloud();
+setInterval(syncPlayerViewFromCloud, 15000);
+window.addEventListener("focus", syncPlayerViewFromCloud);
+document.addEventListener("visibilitychange", () => {
+  if (document.visibilityState === "visible") syncPlayerViewFromCloud();
+});

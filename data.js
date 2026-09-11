@@ -1,6 +1,7 @@
 const STORAGE_KEY = "volleyball62Config_v2";
 const LEGACY_STORAGE_KEY = "volleyball62Config_v1";
 const ADMIN_SESSION_KEY = "volleyball62AdminUnlocked";
+const ADMIN_PIN_SESSION_KEY = "volleyball62AdminCloudPin";
 
 const DEFAULT_CONFIG = {
   teamName: "Queens Grant 6–2 Rotation Guide",
@@ -89,6 +90,82 @@ function saveConfig(config) {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(normalizeConfig(config)));
 }
 
+// ---------- Supabase shared sync ----------
+let _supabaseClient = null;
+
+function getSupabaseSettings() {
+  return window.VBALL_SUPABASE || {};
+}
+
+function isSupabaseConfigured() {
+  const settings = getSupabaseSettings();
+  return Boolean(
+    settings.url &&
+    settings.publishableKey &&
+    settings.teamSlug &&
+    !settings.url.includes("PASTE_YOUR") &&
+    !settings.publishableKey.includes("PASTE_YOUR") &&
+    window.supabase?.createClient
+  );
+}
+
+function getSupabaseClient() {
+  if (!isSupabaseConfigured()) return null;
+  if (_supabaseClient) return _supabaseClient;
+  const settings = getSupabaseSettings();
+  _supabaseClient = window.supabase.createClient(settings.url, settings.publishableKey, {
+    auth: { persistSession: false, autoRefreshToken: false, detectSessionInUrl: false }
+  });
+  return _supabaseClient;
+}
+
+async function loadConfigFromCloud() {
+  const client = getSupabaseClient();
+  if (!client) return { data: null, error: new Error("Supabase is not configured yet.") };
+  const settings = getSupabaseSettings();
+  const { data, error } = await client.rpc("get_team_config", { team_slug: settings.teamSlug });
+  if (error) return { data: null, error };
+  if (!data) return { data: null, error: new Error("No shared team configuration was found.") };
+  const normalized = normalizeConfig(data);
+  saveConfig(normalized);
+  return { data: normalized, error: null };
+}
+
+async function verifyAdminPinCloud(pin) {
+  const client = getSupabaseClient();
+  if (!client) return { ok: false, error: new Error("Supabase is not configured yet.") };
+  const settings = getSupabaseSettings();
+  const { data, error } = await client.rpc("verify_team_admin", {
+    team_slug: settings.teamSlug,
+    coach_pin: String(pin)
+  });
+  return { ok: data === true && !error, error };
+}
+
+async function saveConfigToCloud(config, pin) {
+  const client = getSupabaseClient();
+  if (!client) return { data: null, error: new Error("Supabase is not configured yet.") };
+  const settings = getSupabaseSettings();
+  const payload = normalizeConfig(config);
+  delete payload.adminPin;
+  const { data, error } = await client.rpc("save_team_config", {
+    team_slug: settings.teamSlug,
+    payload,
+    coach_pin: String(pin)
+  });
+  if (error) return { data: null, error };
+  const normalized = normalizeConfig(data);
+  saveConfig(normalized);
+  return { data: normalized, error: null };
+}
+
+async function refreshConfigFromCloudIfAvailable() {
+  if (!isSupabaseConfigured()) return false;
+  const { data, error } = await loadConfigFromCloud();
+  if (error || !data) return false;
+  return true;
+}
+
 // Volleyball zones: 1=right back/server, 2=right front, 3=middle front,
 // 4=left front, 5=left back, 6=middle back.
 const ROTATION_COORDS = {
@@ -160,7 +237,11 @@ function getFormationRole(entry) {
   return getSystemRole(entry.player, entry.zone);
 }
 
-function getServeCoords(zone) {
+function getServeCoords(zone, rotationNumber = 1) {
+  // Rotation 3 custom serving stack from coach reference: Zone 5 tucks into
+  // the middle of the court instead of staying wide on the left sideline.
+  if (rotationNumber === 3 && zone === 5) return { x: 46, y: 49 };
+
   const compactServe = {
     4: { x: 43, y: 17 },
     3: { x: 50, y: 7 },
