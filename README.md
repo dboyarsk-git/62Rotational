@@ -1,54 +1,37 @@
 # 6–2 Volleyball Rotation Guide
 
-A mobile-friendly interactive teaching website for explaining a volleyball 6–2 rotation.
+A static, mobile-friendly teaching site for a volleyball 6–2 system. It is designed to run on GitHub Pages.
 
-## Features
+## Current features
 
-- Six rotation buttons
-- Serve positions
-- Animated Serve → Serve Recovery movement
-- Free-ball positions
-- Role lessons for Setter/Right Side, Outside, and Middle
-- Tap any player to see her specific job
-- “Show me my job” player selector
-- Separate Coach Admin page
-- Editable player names and roles
-- No build tools required
+- Six rotation selector
+- Serve Receive teaching view
+- Rotation 1 teaching pattern: hidden back-row setter + Zone 2 outside pulling back
+- Setter Release view with target between middle and right side
+- Base positions
+- Outside, middle, and right-side attack views
+- Free-ball positioning
+- Serve and Serve Recovery views
+- Player-by-player job explanations
+- Setter/Right Side, Outside, Middle, DS, and Libero roles
+- Coach Admin page with editable player names and roles
+- Automatic substitute links: link a sub to a starter and choose Front Row, Back Row, or Always
+- Modern navy/orange visual design
 
 ## Coach Admin
 
-Open `admin.html`.
+Open `admin.html`. Default PIN: `6262`.
 
-Default demo PIN: `6262`
+Roster edits are currently saved with browser `localStorage`. This works on GitHub Pages, but edits made on one device do not automatically sync to other devices. A cloud database such as Firebase or Supabase is needed for one coach edit to update every player phone automatically.
 
-The PIN is only a convenience lock. Because GitHub Pages is a static host, the site source can be viewed publicly.
+## GitHub Pages
 
-## How saving works on GitHub Pages
+Upload all files in this folder to the root of the repository. In GitHub:
 
-This version saves admin edits with browser `localStorage`. This means:
+1. Settings → Pages
+2. Source: Deploy from a branch
+3. Branch: `main`
+4. Folder: `/ (root)`
+5. Save
 
-- Names persist on the same browser/device.
-- The website itself can be hosted for free on GitHub Pages.
-- An edit made on the coach's phone does **not** automatically update every player's phone.
-
-For shared live updates across all devices, connect the site to Firebase, Supabase, or another small database.
-
-## Publish on GitHub Pages
-
-1. Create a new GitHub repository.
-2. Upload all files in this folder to the repository root.
-3. Open the repository's **Settings → Pages**.
-4. Under **Build and deployment**, choose **Deploy from a branch**.
-5. Select the `main` branch and `/ (root)` folder.
-6. Save. GitHub will provide the public website address.
-
-No npm install or build step is needed.
-
-## Files
-
-- `index.html` — player-facing teaching page
-- `admin.html` — coach editor
-- `styles.css` — styling and responsive court layout
-- `data.js` — default lineup, storage, and rotation math
-- `app.js` — player-view interactions and movement
-- `admin.js` — admin editor logic
+The site loads from `index.html`; Coach Admin is at `admin.html`.

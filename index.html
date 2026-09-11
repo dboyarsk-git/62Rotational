@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="theme-color" content="#0b1f3a" />
+  <meta name="theme-color" content="#07192f" />
   <title>6–2 Volleyball Rotation Guide</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
@@ -12,7 +12,7 @@
     <div>
       <p class="eyebrow">Interactive Coaching Board</p>
       <h1 id="teamTitle">6–2 Volleyball Rotation Guide</h1>
-      <p class="subtitle">Pick a rotation, choose a situation, then tap a player to learn her job.</p>
+      <p class="subtitle">Pick a rotation, choose the phase of the rally, then tap a player to learn her job.</p>
     </div>
     <a class="admin-link" href="admin.html">⚙ Coach Admin</a>
   </header>
@@ -30,16 +30,24 @@
         </div>
       </div>
 
-      <div class="control-row situation-row">
-        <div>
-          <span class="control-label">Situation</span>
-          <div class="segmented wide" id="modeButtons">
-            <button data-mode="serve" class="active">Serve</button>
-            <button data-mode="recovery">Serve Recovery</button>
-            <button data-mode="freeball">Free Ball</button>
-          </div>
+      <div class="phase-group">
+        <span class="control-label">Serve Receive → Offense</span>
+        <div class="segmented wide scrollable" id="modeButtons">
+          <button data-mode="receive" class="active">Serve Receive</button>
+          <button data-mode="set">Setter Release</button>
+          <button data-mode="base">Base</button>
+          <button data-mode="attack_oh">Outside Hit</button>
+          <button data-mode="attack_mb">Middle Hit</button>
+          <button data-mode="attack_rs">Right Side Hit</button>
+          <button data-mode="freeball">Free Ball</button>
+          <button data-mode="serve">Serve</button>
+          <button data-mode="recovery">Serve Recovery</button>
         </div>
-        <button id="animateBtn" class="primary-btn">▶ Show Serve → Recovery</button>
+      </div>
+
+      <div class="flow-actions">
+        <button id="receiveFlowBtn" class="primary-btn">▶ Show Receive → Set → Base</button>
+        <button id="serveFlowBtn" class="secondary-btn">▶ Show Serve → Recovery</button>
       </div>
     </section>
 
@@ -48,9 +56,9 @@
         <div class="court-topline">
           <div>
             <p class="eyebrow">Rotation <span id="rotationLabel">1</span></p>
-            <h2 id="modeTitle">Serve</h2>
+            <h2 id="modeTitle">Serve Receive</h2>
           </div>
-          <span class="legend-pill" id="modeHint">Stay in legal rotational order until contact.</span>
+          <span class="legend-pill" id="modeHint">Hide the setter and build a clean passing shape.</span>
         </div>
 
         <div class="court-wrap" id="courtWrap">
@@ -64,6 +72,7 @@
             <div class="zone-label z6">6</div>
             <div class="zone-label z1">1</div>
             <div class="attack-line"></div>
+            <div id="setTarget" class="set-target" hidden>SET TARGET</div>
             <div class="player-layer" id="playerLayer"></div>
           </div>
           <div class="service-zone-label">SERVICE ZONE</div>
@@ -77,8 +86,8 @@
 
       <aside class="lesson-card card">
         <p class="eyebrow">What are we learning?</p>
-        <h2 id="lessonHeading">Serving</h2>
-        <p id="lessonText">Start in legal rotational order. The player in Zone 1 serves from behind the end line.</p>
+        <h2 id="lessonHeading">Serve Receive</h2>
+        <p id="lessonText"></p>
         <div class="mini-steps" id="lessonSteps"></div>
       </aside>
     </section>
@@ -89,13 +98,15 @@
           <p class="eyebrow">Position Lessons</p>
           <h2>What is my job?</h2>
         </div>
-        <p>These buttons highlight that position on the court.</p>
+        <p>Highlight one position at a time.</p>
       </div>
 
       <div class="role-tabs" id="roleTabs">
-        <button data-role="S/RS">Right Side / Setter</button>
+        <button data-role="S/RS">Setter / Right Side</button>
         <button data-role="OH">Outside</button>
         <button data-role="MB">Middle</button>
+        <button data-role="DS">DS</button>
+        <button data-role="LIB">Libero</button>
         <button data-role="ALL" class="active">Show Everyone</button>
       </div>
 
@@ -104,8 +115,8 @@
 
     <section class="why-card card">
       <details>
-        <summary>Why do players start in one spot and move after the serve?</summary>
-        <p>Before the server contacts the ball, players must stay in the correct rotational order. Once the serve is contacted, players can release into the positions used by the team’s offense and defense. That is why a player’s <strong>rotational position</strong> may look different from her normal <strong>playing position</strong>.</p>
+        <summary>Why do players start in one spot and move?</summary>
+        <p>The rotation gives every player a starting relationship on the court. Your serve-receive pattern can then hide the setter and pull passers into better lanes. Once the pass is made, the setter releases to target and the hitters move into their normal attack positions.</p>
       </details>
     </section>
   </main>

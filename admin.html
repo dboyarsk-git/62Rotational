@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="theme-color" content="#0b1f3a" />
+  <meta name="theme-color" content="#07192f" />
   <title>Coach Admin — 6–2 Rotation Guide</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
@@ -12,7 +12,7 @@
     <div>
       <p class="eyebrow">Coach Controls</p>
       <h1>6–2 Rotation Admin</h1>
-      <p class="subtitle">Edit names and roles without touching the website code.</p>
+      <p class="subtitle">Edit starters, positions, and automatic DS/libero substitutions without touching the code.</p>
     </div>
     <a class="admin-link" href="index.html">← Player View</a>
   </header>
@@ -21,7 +21,7 @@
     <section id="pinGate" class="card pin-card">
       <p class="eyebrow">Admin Mode</p>
       <h2>Enter Coach PIN</h2>
-      <p>This is a convenience lock for a static GitHub Pages site, not bank-level security.</p>
+      <p>This is a convenience lock for a static GitHub Pages site.</p>
       <form id="pinForm" class="pin-form">
         <input id="pinInput" type="password" inputmode="numeric" autocomplete="off" placeholder="Coach PIN" />
         <button class="primary-btn" type="submit">Open Admin</button>
@@ -46,12 +46,24 @@
       <section class="card roster-editor">
         <div class="section-heading">
           <div>
-            <p class="eyebrow">Starting Six</p>
-            <h2>Edit Player Names & Roles</h2>
+            <p class="eyebrow">Starting Rotation</p>
+            <h2>Edit Starting Six</h2>
           </div>
-          <span class="legend-pill">Changes follow the lineup slot through all 6 rotations.</span>
+          <span class="legend-pill">The lineup slot rotates; the name can change anytime.</span>
         </div>
         <div class="roster-grid" id="rosterGrid"></div>
+      </section>
+
+      <section class="card subs-editor">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Automatic Substitutions</p>
+            <h2>DS / Libero / Subs</h2>
+          </div>
+          <button id="addSubBtn" class="secondary-btn">+ Add Substitute</button>
+        </div>
+        <p class="admin-helper">Link a substitute to one starter, then choose when she automatically appears on the court.</p>
+        <div class="subs-grid" id="subsGrid"></div>
       </section>
 
       <section class="card admin-actions-card">
@@ -65,7 +77,7 @@
 
       <section class="card admin-note">
         <h3>GitHub Pages note</h3>
-        <p>This version stores edits in the browser using <code>localStorage</code>. That means your saved names stay on this device/browser. For one coach device, this works immediately with GitHub Pages. To make one admin change update the site for every player on every phone, connect a small cloud database such as Firebase or Supabase.</p>
+        <p>This version saves roster edits in this browser with <code>localStorage</code>. The rotation/substitution logic works immediately here, but edits made on this device do not automatically sync to the girls’ phones. A shared database can be connected later if you want one admin change to update everyone’s site.</p>
       </section>
     </div>
   </main>

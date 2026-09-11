@@ -7,10 +7,26 @@ const pinError = document.getElementById("pinError");
 const adminPanel = document.getElementById("adminPanel");
 const teamNameInput = document.getElementById("teamNameInput");
 const rosterGrid = document.getElementById("rosterGrid");
+const subsGrid = document.getElementById("subsGrid");
+const addSubBtn = document.getElementById("addSubBtn");
 const saveBtn = document.getElementById("saveBtn");
 const previewBtn = document.getElementById("previewBtn");
 const resetBtn = document.getElementById("resetBtn");
 const saveStatus = document.getElementById("saveStatus");
+
+const ROLE_OPTIONS = [
+  ["S/RS", "Setter / Right Side"],
+  ["S", "Setter"],
+  ["RS", "Right Side"],
+  ["OH", "Outside Hitter"],
+  ["MB", "Middle Blocker"],
+  ["DS", "Defensive Specialist"],
+  ["LIB", "Libero"]
+];
+
+function roleOptions(selectedRole) {
+  return ROLE_OPTIONS.map(([value, label]) => `<option value="${value}" ${selectedRole === value ? "selected" : ""}>${label}</option>`).join("");
+}
 
 function unlockAdmin() {
   sessionStorage.setItem(ADMIN_SESSION_KEY, "true");
@@ -22,8 +38,12 @@ function unlockAdmin() {
 function renderEditor() {
   config = loadConfig();
   teamNameInput.value = config.teamName || "";
-  rosterGrid.innerHTML = "";
+  renderRoster();
+  renderSubs();
+}
 
+function renderRoster() {
+  rosterGrid.innerHTML = "";
   config.players.forEach((player, index) => {
     const card = document.createElement("div");
     card.className = "player-edit-card";
@@ -35,32 +55,84 @@ function renderEditor() {
       </label>
       <label>
         Position / Role
-        <select class="player-role-input" data-index="${index}">
-          <option value="S/RS" ${player.role === "S/RS" ? "selected" : ""}>Setter / Right Side</option>
-          <option value="OH" ${player.role === "OH" ? "selected" : ""}>Outside Hitter</option>
-          <option value="MB" ${player.role === "MB" ? "selected" : ""}>Middle Blocker</option>
-        </select>
+        <select class="player-role-input" data-index="${index}">${roleOptions(player.role)}</select>
       </label>
     `;
     rosterGrid.appendChild(card);
   });
 }
 
-function collectEditorData() {
-  const next = loadConfig();
-  next.teamName = teamNameInput.value.trim() || "6–2 Volleyball Rotation Guide";
+function renderSubs() {
+  subsGrid.innerHTML = "";
+  if (!config.subs.length) {
+    subsGrid.innerHTML = '<div class="empty-subs">No automatic substitutions yet. Tap <strong>+ Add Substitute</strong> to add a DS, libero, or other sub.</div>';
+    return;
+  }
+
+  config.subs.forEach((sub, index) => {
+    const card = document.createElement("div");
+    card.className = "sub-edit-card";
+    const starterOptions = config.players.map((player) => `<option value="${player.id}" ${sub.linkedPlayerId === player.id ? "selected" : ""}>${escapeHtml(player.name)}</option>`).join("");
+    card.innerHTML = `
+      <div class="sub-card-head">
+        <div class="slot-number">Sub ${index + 1}</div>
+        <button class="remove-sub-btn" data-sub-index="${index}" type="button">Remove</button>
+      </div>
+      <div class="sub-fields">
+        <label>
+          Player Name
+          <input class="sub-name-input" data-sub-index="${index}" value="${escapeAttribute(sub.name)}" maxlength="24" />
+        </label>
+        <label>
+          Position / Role
+          <select class="sub-role-input" data-sub-index="${index}">${roleOptions(sub.role)}</select>
+        </label>
+        <label>
+          Linked to
+          <select class="sub-link-input" data-sub-index="${index}">${starterOptions}</select>
+        </label>
+        <label>
+          Automatically enters when linked player is…
+          <select class="sub-trigger-input" data-sub-index="${index}">
+            <option value="back" ${sub.trigger === "back" ? "selected" : ""}>Back Row</option>
+            <option value="front" ${sub.trigger === "front" ? "selected" : ""}>Front Row</option>
+            <option value="always" ${sub.trigger === "always" ? "selected" : ""}>Always On Court</option>
+          </select>
+        </label>
+      </div>
+    `;
+    subsGrid.appendChild(card);
+  });
+}
+
+function syncDraftFromInputs() {
+  config.teamName = teamNameInput.value.trim() || "6–2 Volleyball Rotation Guide";
 
   document.querySelectorAll(".player-name-input").forEach((input) => {
     const index = Number(input.dataset.index);
-    next.players[index].name = input.value.trim() || `Player ${index + 1}`;
+    config.players[index].name = input.value.trim() || `Player ${index + 1}`;
   });
-
   document.querySelectorAll(".player-role-input").forEach((select) => {
     const index = Number(select.dataset.index);
-    next.players[index].role = select.value;
+    config.players[index].role = select.value;
   });
 
-  return next;
+  document.querySelectorAll(".sub-name-input").forEach((input) => {
+    const index = Number(input.dataset.subIndex);
+    if (config.subs[index]) config.subs[index].name = input.value.trim() || `Sub ${index + 1}`;
+  });
+  document.querySelectorAll(".sub-role-input").forEach((select) => {
+    const index = Number(select.dataset.subIndex);
+    if (config.subs[index]) config.subs[index].role = select.value;
+  });
+  document.querySelectorAll(".sub-link-input").forEach((select) => {
+    const index = Number(select.dataset.subIndex);
+    if (config.subs[index]) config.subs[index].linkedPlayerId = select.value;
+  });
+  document.querySelectorAll(".sub-trigger-input").forEach((select) => {
+    const index = Number(select.dataset.subIndex);
+    if (config.subs[index]) config.subs[index].trigger = select.value;
+  });
 }
 
 function showStatus(message, isError = false) {
@@ -69,7 +141,7 @@ function showStatus(message, isError = false) {
   setTimeout(() => {
     saveStatus.textContent = "";
     saveStatus.classList.remove("error-text");
-  }, 3000);
+  }, 3200);
 }
 
 function escapeAttribute(value) {
@@ -78,6 +150,15 @@ function escapeAttribute(value) {
     .replaceAll('"', "&quot;")
     .replaceAll("<", "&lt;")
     .replaceAll(">", "&gt;");
+}
+
+function escapeHtml(value) {
+  return String(value)
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
 }
 
 pinForm.addEventListener("submit", (event) => {
@@ -92,26 +173,50 @@ pinForm.addEventListener("submit", (event) => {
   }
 });
 
+addSubBtn.addEventListener("click", () => {
+  syncDraftFromInputs();
+  const starterId = config.players[0]?.id || "p1";
+  config.subs.push({
+    id: `sub_${Date.now()}_${Math.random().toString(16).slice(2)}`,
+    name: "New Sub",
+    role: "DS",
+    linkedPlayerId: starterId,
+    trigger: "back"
+  });
+  renderRoster();
+  renderSubs();
+});
+
+subsGrid.addEventListener("click", (event) => {
+  const button = event.target.closest(".remove-sub-btn");
+  if (!button) return;
+  syncDraftFromInputs();
+  const index = Number(button.dataset.subIndex);
+  config.subs.splice(index, 1);
+  renderRoster();
+  renderSubs();
+});
+
 saveBtn.addEventListener("click", () => {
-  config = collectEditorData();
+  syncDraftFromInputs();
   saveConfig(config);
-  showStatus("Saved! Open Player View to see the updated names.");
+  config = loadConfig();
+  renderEditor();
+  showStatus("Saved! Names, roles, and automatic substitutions are updated on this browser.");
 });
 
 previewBtn.addEventListener("click", () => {
-  config = collectEditorData();
+  syncDraftFromInputs();
   saveConfig(config);
   window.location.href = "index.html";
 });
 
 resetBtn.addEventListener("click", () => {
-  const confirmed = window.confirm("Reset all names and positions to the demo lineup?");
+  const confirmed = window.confirm("Reset all names, positions, and substitutions to the demo lineup?");
   if (!confirmed) return;
   saveConfig(cloneDefaultConfig());
   renderEditor();
   showStatus("Demo lineup restored.");
 });
 
-if (sessionStorage.getItem(ADMIN_SESSION_KEY) === "true") {
-  unlockAdmin();
-}
+if (sessionStorage.getItem(ADMIN_SESSION_KEY) === "true") unlockAdmin();
