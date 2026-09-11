@@ -1,4 +1,4 @@
-# Supabase LIVE Sync Setup — v12
+# Supabase LIVE Sync Setup — v13
 
 Your Project URL and publishable key are already filled in.
 
@@ -7,10 +7,10 @@ Your Project URL and publishable key are already filled in.
 2. Open `supabase-schema.sql` from this folder.
 3. Paste the entire file into a new query and click **Run**.
 
-You can run the v12 SQL even if you already ran v8. It upgrades the database with a safe player-facing mirror table and Supabase Realtime support.
+You can run the v13 SQL even if you already ran v8. It upgrades the database with a safe player-facing mirror table and Supabase Realtime support.
 
-## Then publish v12
-Upload all v12 files to the root of the existing GitHub Pages repository and commit them. The HTML now uses `?v=11` cache-busting on the CSS/JS, which helps computers stop holding onto an older build.
+## Then publish v13
+Upload all v13 files to the root of the existing GitHub Pages repository and commit them. The HTML now uses `?v=11` cache-busting on the CSS/JS, which helps computers stop holding onto an older build.
 
 ## What the badge means
 - **LIVE • time** = connected to Supabase and listening for updates.
