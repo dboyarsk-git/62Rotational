@@ -190,9 +190,12 @@ function getActivePlayerInstruction(entry) {
 
   if (currentMode === "receive") {
     if (role === "S") return `${base} Stay hidden and OUT of the passing lane. Once the pass is controlled, release to the target between the middle and right side.`;
+    if ((currentRotation === 3 || currentRotation === 6) && zone === 2 && role === "RS") return `${base} Push back toward Zone 1 and become the right-side passer. After the pass, release to your attacking/base job.`;
+    if ((currentRotation === 3 || currentRotation === 6) && zone === 3 && role === "OH") return `${base} Push up at the net with the hidden setter so the passing lanes stay open, then release after the pass.`;
+    if ((currentRotation === 1 || currentRotation === 4) && zone === 2 && role === "OH") return `${base} Pull back on the right to hide the setter, pass the right lane, then release after the pass.`;
     if (role === "OH") return `${base} Join the serve-receive shape, call seams, and pass toward the target.`;
-    if (role === "MB" && isFrontRow(zone)) return `${base} Stay near the middle/front relationship, then transition as soon as the pass is made.`;
-    if (role === "RS" && isFrontRow(zone)) return `${base} Stay near the right-front relationship and be ready to transition after the pass.`;
+    if (role === "MB" && isFrontRow(zone)) return `${base} Hold the corrected front-row overlap, then transition as soon as the pass is made.`;
+    if (role === "RS" && isFrontRow(zone)) return `${base} Hold the corrected serve-receive relationship and transition after the pass.`;
     return `${base} Help hold the passing shape and communicate seams.`;
   }
 

@@ -1,8 +1,15 @@
-# Volleyball 6–2 Rotation Guide — v9
+# Volleyball 6–2 Rotation Guide — v11
 
 GitHub Pages front end + Supabase shared roster.
 
-### v9 changes
+### v11 changes
+- Rebuilt all six **Serve Receive** formations from the coach-marked `Fixed rotations.pdf`.
+- Rotations 1/4: Zone 2 pulls back to hide the Zone 1 setter.
+- Rotations 2/5: Zones 4-5-1 form the passing line with Zone 6 hidden.
+- Rotations 3/6: Zones 5 + 3 push up near the net; Zones 6-1-2 form the passing line.
+- Removed the unwanted vertical center line from the court.
+- Supabase LIVE sync settings from v10 are preserved.
+- Rotation 6 Serve Receive now mirrors Rotation 3: setter hidden up by the net, front-row outside pushed up at the net, and the S/RS in Zone 2 drops back toward Zone 1 to receive.
 - Added visible LIVE / sync badge.
 - Added Supabase Realtime roster updates with a 5-second polling fallback.
 - Added cache-busting so desktop browsers do not keep old JS/CSS after a GitHub update.

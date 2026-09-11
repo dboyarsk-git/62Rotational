@@ -284,50 +284,64 @@ function getServeCoords(zone, rotationNumber = 1) {
   return compactServe[zone] || ROTATION_COORDS[zone];
 }
 
+const SERVE_RECEIVE_ZONE_COORDS = {
+  // Coach-corrected serve-receive shapes from "Fixed rotations.pdf".
+  // Coordinates follow ROTATIONAL ZONE numbers, so names/subs/libero can change
+  // without changing the formation.
+  1: {
+    1: { x: 88, y: 84 }, // setter hidden behind the right passer
+    2: { x: 78, y: 74 }, // outside pulls back to hide the setter
+    3: { x: 50, y: 12 },
+    4: { x: 82, y: 13 },
+    5: { x: 18, y: 74 },
+    6: { x: 50, y: 82 }
+  },
+  2: {
+    1: { x: 78, y: 74 },
+    2: { x: 50, y: 12 },
+    3: { x: 82, y: 13 },
+    4: { x: 18, y: 74 },
+    5: { x: 50, y: 82 },
+    6: { x: 88, y: 84 } // setter hidden behind Zone 1
+  },
+  3: {
+    1: { x: 50, y: 82 },
+    2: { x: 82, y: 74 }, // S/RS drops back toward Zone 1 to receive
+    3: { x: 31, y: 11 }, // outside pushes up with the setter
+    4: { x: 50, y: 12 },
+    5: { x: 25, y: 20 }, // setter hidden up near the net
+    6: { x: 18, y: 74 }
+  },
+  4: {
+    1: { x: 88, y: 84 },
+    2: { x: 78, y: 74 },
+    3: { x: 50, y: 12 },
+    4: { x: 82, y: 13 },
+    5: { x: 18, y: 74 },
+    6: { x: 50, y: 82 }
+  },
+  5: {
+    1: { x: 78, y: 74 },
+    2: { x: 50, y: 12 },
+    3: { x: 82, y: 13 },
+    4: { x: 18, y: 74 },
+    5: { x: 50, y: 82 },
+    6: { x: 88, y: 84 }
+  },
+  6: {
+    1: { x: 50, y: 82 },
+    2: { x: 82, y: 74 }, // S/RS pushes back to receive
+    3: { x: 31, y: 11 }, // outside pushes up at the net
+    4: { x: 50, y: 12 },
+    5: { x: 25, y: 20 }, // setter hidden with the outside
+    6: { x: 18, y: 74 }
+  }
+};
+
 function getServeReceiveCoords(entry, activeCourt = [], rotationNumber = 1) {
-  const { zone } = entry;
-  const role = getFormationRole(entry);
-
-  // Rotation 3 custom serve-receive from coach correction:
-  // - the back-row setter in Zone 5 pushes up near the net,
-  // - the front-row outside in Zone 3 pushes up with her to keep the setter hidden,
-  // - the S/RS starting in Zone 2 drops back toward Zone 1 to become a passer.
-  if (rotationNumber === 3) {
-    if (role === "S" && zone === 5) return { x: 34, y: 18 };
-    if (role === "OH" && zone === 3) return { x: 51, y: 11 };
-    if (role === "RS" && zone === 2) return { x: 82, y: 73 };
-  }
-
-  if (role === "S") {
-    if (zone === 1) return { x: 88, y: 84 };
-    if (zone === 6) return { x: 72, y: 88 };
-    return { x: 12, y: 88 };
-  }
-
-  if (role === "MB" && isFrontRow(zone)) return { x: 50, y: 12 };
-  if (role === "RS" && isFrontRow(zone)) return { x: 82, y: 13 };
-
-  // Three passers: two outsides + the back-row middle/libero/DS slot.
-  // Sort their rotational starting spots left-to-right, then spread them into
-  // three clean lanes. Rotation 1 therefore matches the annotated reference:
-  // Slot 5 left, Slot 6 middle, Slot 2 right hiding the setter.
-  const passerRank = { 4: 0, 5: 1, 3: 2, 6: 3, 2: 4, 1: 5 };
-  const passers = (activeCourt || [])
-    .filter((candidate) => {
-      const candidateRole = getFormationRole(candidate);
-      return candidateRole === "OH" || (!isFrontRow(candidate.zone) && candidateRole === "MB");
-    })
-    .sort((a, b) => (passerRank[a.zone] ?? 99) - (passerRank[b.zone] ?? 99));
-
-  const passerIndex = passers.findIndex((candidate) => candidate.index === entry.index);
-  const lanes = [
-    { x: 18, y: 74 },
-    { x: 50, y: 82 },
-    { x: 78, y: 74 }
-  ];
-  if (passerIndex >= 0) return lanes[Math.min(passerIndex, lanes.length - 1)];
-
-  return ROTATION_COORDS[zone];
+  const fixed = SERVE_RECEIVE_ZONE_COORDS[rotationNumber]?.[entry.zone];
+  if (fixed) return fixed;
+  return ROTATION_COORDS[entry.zone];
 }
 
 function getSetterReleaseCoords(entry) {
