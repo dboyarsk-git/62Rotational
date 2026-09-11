@@ -1,37 +1,19 @@
-# Supabase cloud sync — v8
+# Supabase LIVE Sync Setup — v9
 
-This version can keep the roster synchronized across the GitHub Pages site, phones, tablets, and computers.
+Your Project URL and publishable key are already filled in.
 
-## 1. Create or open your Supabase project
+## One required database step
+1. Open Supabase Dashboard → **SQL Editor**.
+2. Open `supabase-schema.sql` from this folder.
+3. Paste the entire file into a new query and click **Run**.
 
-In Supabase, open the project you want to use for the volleyball site.
+You can run the v9 SQL even if you already ran v8. It upgrades the database with a safe player-facing mirror table and Supabase Realtime support.
 
-## 2. Run the database setup
+## Then publish v9
+Upload all v9 files to the root of the existing GitHub Pages repository and commit them. The HTML now uses `?v=9` cache-busting on the CSS/JS, which helps computers stop holding onto an older build.
 
-Open **SQL Editor**, create a new query, paste everything from `supabase-schema.sql`, and run it once.
-
-This creates one shared roster named `qg-volleyball` and sets the initial coach PIN to **6262**.
-
-## 3. Connection values are already entered
-
-This v8 package already contains the provided Supabase **Project URL** and **publishable browser key** in `supabase-config.js`. No extra config edit is needed.
-
-Do **not** replace it with a secret or `service_role` key.
-
-## 4. Upload v8 to GitHub
-
-Replace the old website files in the root of the `62Rotational` repository with the v8 files and commit them.
-GitHub Pages will rebuild automatically.
-
-## How syncing works
-
-- Player view loads its most recent local copy immediately so the page stays fast.
-- It then pulls the shared Supabase roster.
-- While the page stays open, it checks Supabase about every 15 seconds and whenever the player returns to the tab.
-- Coach Admin verifies PIN against Supabase.
-- **Save Changes** writes names, positions, subs, and libero assignments to the shared roster.
-- The PIN hash stays in Supabase and direct browser writes to the underlying table are blocked.
-
-## Important
-
-The publishable key is designed for browser use. Never place a Supabase **secret** or **service_role** key in `supabase-config.js` or GitHub.
+## What the badge means
+- **LIVE • time** = connected to Supabase and listening for updates.
+- **SYNCING…** = loading the newest roster.
+- **LIVE unavailable • retrying** = Realtime dropped; the site still polls every 5 seconds as backup.
+- **LOCAL • not connected** = Supabase is not available, so that device is using its own browser storage.

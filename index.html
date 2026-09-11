@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#07192f" />
   <title>6–2 Volleyball Rotation Guide</title>
-  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="styles.css?v=9" />
 </head>
 <body>
   <header class="site-header">
@@ -14,7 +14,12 @@
       <h1 id="teamTitle">6–2 Volleyball Rotation Guide</h1>
       <p class="subtitle">Pick a rotation, choose the situation, then tap a player to learn exactly where she goes.</p>
     </div>
-    <a class="admin-link" href="admin.html">⚙ Coach Admin</a>
+    <div class="header-actions">
+      <div id="syncBadge" class="sync-badge sync-pending" title="Shared roster sync status">
+        <span class="sync-dot"></span><span id="syncText">Connecting…</span>
+      </div>
+      <a class="admin-link" href="admin.html">⚙ Coach Admin</a>
+    </div>
   </header>
 
   <main class="page-shell">
@@ -120,13 +125,13 @@
   </main>
 
   <footer>
-    <span>6–2 Rotation Teaching Tool</span>
+    <span>6–2 Rotation Teaching Tool • v9</span>
     <a href="admin.html">Coach Admin</a>
   </footer>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="supabase-config.js"></script>
-  <script src="data.js"></script>
-  <script src="app.js"></script>
+  <script src="supabase-config.js?v=9"></script>
+  <script src="data.js?v=9"></script>
+  <script src="app.js?v=9"></script>
 </body>
 </html>

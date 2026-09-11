@@ -166,6 +166,37 @@ async function refreshConfigFromCloudIfAvailable() {
   return true;
 }
 
+function subscribeToTeamConfigChanges(onUpdate, onStatus) {
+  const client = getSupabaseClient();
+  if (!client) {
+    onStatus?.("LOCAL_ONLY");
+    return null;
+  }
+
+  const settings = getSupabaseSettings();
+  const channel = client
+    .channel(`volleyball-team-${settings.teamSlug}-${Math.random().toString(16).slice(2)}`)
+    .on(
+      "postgres_changes",
+      {
+        event: "UPDATE",
+        schema: "public",
+        table: "volleyball_team_public",
+        filter: `slug=eq.${settings.teamSlug}`
+      },
+      (payload) => {
+        const cloudConfig = payload?.new?.config;
+        if (!cloudConfig) return;
+        const normalized = normalizeConfig(cloudConfig);
+        saveConfig(normalized);
+        onUpdate?.(normalized, payload?.new?.updated_at || null);
+      }
+    )
+    .subscribe((status) => onStatus?.(status));
+
+  return channel;
+}
+
 // Volleyball zones: 1=right back/server, 2=right front, 3=middle front,
 // 4=left front, 5=left back, 6=middle back.
 const ROTATION_COORDS = {
@@ -253,9 +284,19 @@ function getServeCoords(zone, rotationNumber = 1) {
   return compactServe[zone] || ROTATION_COORDS[zone];
 }
 
-function getServeReceiveCoords(entry, activeCourt = []) {
+function getServeReceiveCoords(entry, activeCourt = [], rotationNumber = 1) {
   const { zone } = entry;
   const role = getFormationRole(entry);
+
+  // Rotation 3 custom serve-receive from coach correction:
+  // - the back-row setter in Zone 5 pushes up near the net,
+  // - the front-row outside in Zone 3 pushes up with her to keep the setter hidden,
+  // - the S/RS starting in Zone 2 drops back toward Zone 1 to become a passer.
+  if (rotationNumber === 3) {
+    if (role === "S" && zone === 5) return { x: 34, y: 18 };
+    if (role === "OH" && zone === 3) return { x: 51, y: 11 };
+    if (role === "RS" && zone === 2) return { x: 82, y: 73 };
+  }
 
   if (role === "S") {
     if (zone === 1) return { x: 88, y: 84 };

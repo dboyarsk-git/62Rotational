@@ -16,6 +16,24 @@ const saveBtn = document.getElementById("saveBtn");
 const previewBtn = document.getElementById("previewBtn");
 const resetBtn = document.getElementById("resetBtn");
 const saveStatus = document.getElementById("saveStatus");
+const syncBadge = document.getElementById("syncBadge");
+const syncText = document.getElementById("syncText");
+
+
+function setAdminSyncBadge(state, text) {
+  if (!syncBadge || !syncText) return;
+  syncBadge.classList.remove("sync-live", "sync-pending", "sync-offline", "sync-local");
+  syncBadge.classList.add(`sync-${state}`);
+  syncText.textContent = text;
+}
+
+function adminSyncedLabel(prefix = "LIVE") {
+  const now = new Date();
+  return `${prefix} • ${now.toLocaleTimeString([], { hour: "numeric", minute: "2-digit" })}`;
+}
+
+if (isSupabaseConfigured()) setAdminSyncBadge("pending", "CONNECTING…");
+else setAdminSyncBadge("local", "LOCAL • not connected");
 
 const ROLE_OPTIONS = [
   ["S/RS", "Setter / Right Side"],
@@ -40,6 +58,7 @@ async function unlockAdmin({ refreshCloud = true } = {}) {
   if (refreshCloud && isSupabaseConfigured()) {
     const localBeforeCloud = loadConfig();
     showStatus("Loading shared roster from Supabase…");
+    setAdminSyncBadge("pending", "SYNCING…");
     const { data, error } = await loadConfigFromCloud();
     if (data && !error) {
       const clean = (value) => {
@@ -68,8 +87,10 @@ async function unlockAdmin({ refreshCloud = true } = {}) {
       config = data;
       renderEditor();
       showStatus("Cloud roster loaded. Changes here will sync to every device.");
+      setAdminSyncBadge("live", adminSyncedLabel());
     } else if (error) {
       showStatus(`Could not load cloud roster: ${error.message}`, true);
+      setAdminSyncBadge("offline", "SYNC ERROR");
     }
   }
 }
@@ -311,6 +332,7 @@ async function saveCurrentDraftToSharedRoster() {
 saveBtn.addEventListener("click", async () => {
   saveBtn.disabled = true;
   showStatus(isSupabaseConfigured() ? "Saving to Supabase…" : "Saving on this browser…");
+  setAdminSyncBadge(isSupabaseConfigured() ? "pending" : "local", isSupabaseConfigured() ? "SYNCING…" : "LOCAL • not connected");
   const result = await saveCurrentDraftToSharedRoster();
   saveBtn.disabled = false;
 
@@ -324,6 +346,7 @@ saveBtn.addEventListener("click", async () => {
     ? "Saved to Supabase! Player names, roles, subs, and libero assignments are now shared across devices."
     : "Saved on this browser. Add your Supabase URL/key to turn on shared sync."
   );
+  setAdminSyncBadge(result.cloud ? "live" : "local", result.cloud ? adminSyncedLabel() : "LOCAL • not connected");
 });
 
 previewBtn.addEventListener("click", async () => {

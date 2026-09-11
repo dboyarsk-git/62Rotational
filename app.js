@@ -22,6 +22,9 @@ const roleExplanation = document.getElementById("roleExplanation");
 const receiveFlowBtn = document.getElementById("receiveFlowBtn");
 const serveFlowBtn = document.getElementById("serveFlowBtn");
 const setTarget = document.getElementById("setTarget");
+const syncBadge = document.getElementById("syncBadge");
+const syncText = document.getElementById("syncText");
+let liveChannel = null;
 
 const MODE_COPY = {
   serve: {
@@ -160,7 +163,7 @@ function buildControls() {
 
 function coordsFor(entry, mode, activeCourt = []) {
   if (mode === "serve") return getServeCoords(entry.zone, currentRotation);
-  if (mode === "receive") return getServeReceiveCoords(entry, activeCourt);
+  if (mode === "receive") return getServeReceiveCoords(entry, activeCourt, currentRotation);
   if (mode === "set") return getSetterReleaseCoords(entry);
   if (mode === "base") return getBaseCoords(entry);
   if (mode === "attack_oh") return getDefenseCoords(entry, "OH");
@@ -450,22 +453,69 @@ serveFlowBtn.addEventListener("click", runServeBaseAnimation);
 
 render();
 
-async function syncPlayerViewFromCloud() {
-  if (!isSupabaseConfigured()) return;
+function setSyncBadge(state, text) {
+  if (!syncBadge || !syncText) return;
+  syncBadge.classList.remove("sync-live", "sync-pending", "sync-offline", "sync-local");
+  syncBadge.classList.add(`sync-${state}`);
+  syncText.textContent = text;
+}
+
+function syncedLabel(prefix = "LIVE") {
+  const now = new Date();
+  return `${prefix} • ${now.toLocaleTimeString([], { hour: "numeric", minute: "2-digit" })}`;
+}
+
+async function syncPlayerViewFromCloud({ quiet = false } = {}) {
+  if (!isSupabaseConfigured()) {
+    setSyncBadge("local", "LOCAL • not connected");
+    return;
+  }
+  if (!quiet) setSyncBadge("pending", "SYNCING…");
+
   const before = JSON.stringify(loadConfig());
   const { data, error } = await loadConfigFromCloud();
-  if (error || !data) return;
+  if (error || !data) {
+    setSyncBadge("offline", "SYNC ERROR");
+    console.warn("Supabase roster sync failed:", error);
+    return;
+  }
+
   const after = JSON.stringify(data);
   if (after !== before) {
     config = data;
     render();
+  } else {
+    config = data;
   }
+  setSyncBadge("live", syncedLabel());
 }
 
-// Load the shared roster immediately, then quietly check for coach edits.
-syncPlayerViewFromCloud();
-setInterval(syncPlayerViewFromCloud, 15000);
-window.addEventListener("focus", syncPlayerViewFromCloud);
+function startLiveRosterSync() {
+  if (!isSupabaseConfigured()) {
+    setSyncBadge("local", "LOCAL • not connected");
+    return;
+  }
+
+  liveChannel = subscribeToTeamConfigChanges(
+    (newConfig) => {
+      config = newConfig;
+      render();
+      setSyncBadge("live", "LIVE • updated now");
+    },
+    (status) => {
+      if (status === "SUBSCRIBED") setSyncBadge("live", syncedLabel());
+      else if (["CHANNEL_ERROR", "TIMED_OUT", "CLOSED"].includes(status)) {
+        setSyncBadge("offline", "LIVE unavailable • retrying");
+      }
+    }
+  );
+}
+
+// Load once from Supabase, then listen for instant changes. A short polling
+// fallback also keeps devices matched if Realtime is temporarily unavailable.
+syncPlayerViewFromCloud().finally(startLiveRosterSync);
+setInterval(() => syncPlayerViewFromCloud({ quiet: true }), 5000);
+window.addEventListener("focus", () => syncPlayerViewFromCloud());
 document.addEventListener("visibilitychange", () => {
   if (document.visibilityState === "visible") syncPlayerViewFromCloud();
 });

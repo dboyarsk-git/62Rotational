@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#07192f" />
   <title>Coach Admin — 6–2 Rotation Guide</title>
-  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="styles.css?v=9" />
 </head>
 <body class="admin-page">
   <header class="site-header">
@@ -14,7 +14,12 @@
       <h1>6–2 Rotation Admin</h1>
       <p class="subtitle">Edit names, positions, DS substitutions, and the libero replacement for every rotation.</p>
     </div>
-    <a class="admin-link" href="index.html">← Player View</a>
+    <div class="header-actions">
+      <div id="syncBadge" class="sync-badge sync-pending" title="Shared roster sync status">
+        <span class="sync-dot"></span><span id="syncText">Connecting…</span>
+      </div>
+      <a class="admin-link" href="index.html">← Player View</a>
+    </div>
   </header>
 
   <main class="page-shell narrow">
@@ -92,15 +97,15 @@
       </section>
 
       <section class="card admin-note">
-        <h3>Supabase cloud sync</h3>
+        <h3>Supabase LIVE cloud sync • v9</h3>
         <p>With <code>supabase-config.js</code> connected, Save Changes updates one shared team configuration in Supabase. The player page checks for updates automatically, so names, positions, DS rules, and libero assignments stay matched across phones and computers.</p>
       </section>
     </div>
   </main>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="supabase-config.js"></script>
-  <script src="data.js"></script>
-  <script src="admin.js"></script>
+  <script src="supabase-config.js?v=9"></script>
+  <script src="data.js?v=9"></script>
+  <script src="admin.js?v=9"></script>
 </body>
 </html>
