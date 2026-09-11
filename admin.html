@@ -12,7 +12,7 @@
     <div>
       <p class="eyebrow">Coach Controls</p>
       <h1>6–2 Rotation Admin</h1>
-      <p class="subtitle">Edit starters, positions, and automatic DS/libero substitutions without touching the code.</p>
+      <p class="subtitle">Edit starters, positions, DS substitutions, and the libero replacement for each rotation without touching the code.</p>
     </div>
     <a class="admin-link" href="index.html">← Player View</a>
   </header>
@@ -54,15 +54,37 @@
         <div class="roster-grid" id="rosterGrid"></div>
       </section>
 
+      <section class="card libero-editor">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Libero Rotation Map</p>
+            <h2>Libero In / Out by Rotation</h2>
+          </div>
+          <span class="legend-pill">Separate libero bubble</span>
+        </div>
+        <p class="admin-helper">Give the libero her name, then choose exactly who she replaces in each rotation. Only back-row starters are selectable for that rotation.</p>
+        <div class="libero-settings-row">
+          <label>
+            Libero Name
+            <input id="liberoNameInput" type="text" maxlength="24" />
+          </label>
+          <label class="toggle-label">
+            <input id="liberoEnabledInput" type="checkbox" />
+            <span>Use libero rotation map</span>
+          </label>
+        </div>
+        <div id="liberoRotationGrid" class="libero-rotation-grid"></div>
+      </section>
+
       <section class="card subs-editor">
         <div class="section-heading">
           <div>
             <p class="eyebrow">Automatic Substitutions</p>
-            <h2>DS / Libero / Subs</h2>
+            <h2>DS / Other Subs</h2>
           </div>
           <button id="addSubBtn" class="secondary-btn">+ Add Substitute</button>
         </div>
-        <p class="admin-helper">Link a substitute to one starter, then choose when she automatically appears on the court.</p>
+        <p class="admin-helper">Use this for DS or other normal subs. Link the sub to one starter and choose whether she enters in the front row, back row, or every rotation.</p>
         <div class="subs-grid" id="subsGrid"></div>
       </section>
 

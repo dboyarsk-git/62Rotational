@@ -497,3 +497,143 @@ body {
   .sub-fields { grid-template-columns: 1fr; }
   .flow-actions > button { width: 100%; }
 }
+
+/* v3 court system: fixed setter target + libero rotation map */
+.attack-line { top: 34%; }
+.attack-line::after {
+  content: "10 FT LINE";
+  position: absolute;
+  right: 8px;
+  top: 7px;
+  color: rgba(255,255,255,.72);
+  font-size: .52rem;
+  font-weight: 950;
+  letter-spacing: .08em;
+}
+
+.set-target {
+  left: 94%;
+  top: 34%;
+  min-width: 78px;
+  text-align: center;
+  transform: translate(-50%, -50%);
+  border-color: rgba(255,255,255,.95);
+  background: rgba(7,25,47,.86);
+  box-shadow: 0 5px 18px rgba(0,0,0,.18);
+}
+
+.player-circle.attack-target {
+  box-shadow: 0 12px 32px rgba(2,14,27,.3), 0 0 0 7px rgba(255,116,38,.22);
+}
+.hitter-badge {
+  position: absolute;
+  right: -11px;
+  bottom: -8px;
+  border-radius: 999px;
+  padding: 4px 7px;
+  background: var(--accent);
+  color: #251307;
+  border: 2px solid #fff;
+  font-size: .48rem;
+  font-weight: 950;
+  letter-spacing: .07em;
+}
+
+/* Libero gets a clearly different bubble from every other player. */
+.player-circle.libero-bubble,
+.player-circle.libero-bubble.selected {
+  background: linear-gradient(145deg, #0a2340, #061729);
+  color: #fff;
+  border-color: #ff8a47;
+  outline-color: rgba(255,116,38,.25);
+  box-shadow: 0 12px 32px rgba(2,14,27,.38), 0 0 0 4px rgba(255,116,38,.15);
+}
+.player-circle.libero-bubble .player-role { color: #ffc49e; opacity: 1; }
+.player-circle.libero-bubble .zone-badge {
+  background: linear-gradient(145deg, #ff914f, #ff6b19);
+  color: #261307;
+}
+.libero-badge {
+  position: absolute;
+  left: -9px;
+  bottom: -6px;
+  border-radius: 999px;
+  padding: 4px 7px;
+  background: #fff;
+  color: var(--navy);
+  border: 2px solid var(--accent);
+  font-size: .48rem;
+  font-weight: 950;
+  letter-spacing: .08em;
+}
+
+.libero-editor { padding: 22px; }
+.libero-settings-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: end;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+.libero-settings-row > label:not(.toggle-label),
+.libero-rotation-card label {
+  display: grid;
+  gap: 7px;
+  font-size: .8rem;
+  font-weight: 850;
+  color: #59677a;
+}
+.toggle-label {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  min-height: 44px;
+  padding: 10px 13px;
+  border: 1px solid #dfe5ec;
+  border-radius: 12px;
+  background: #f8fafc;
+  color: var(--navy);
+  font-weight: 850;
+  white-space: nowrap;
+}
+.toggle-label input { width: auto; accent-color: var(--accent); }
+.libero-rotation-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+.libero-rotation-card {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: 13px;
+  padding: 14px;
+  border: 1px solid rgba(7,25,47,.08);
+  border-radius: 15px;
+  background: linear-gradient(180deg, #fbfcfd, #f5f8fb);
+}
+.libero-rotation-card > div {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 128px;
+}
+.rotation-chip {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: var(--navy);
+  color: #fff;
+  border: 3px solid var(--accent);
+  font-size: .72rem;
+  font-weight: 950;
+}
+
+@media (max-width: 700px) {
+  .libero-settings-row,
+  .libero-rotation-grid { grid-template-columns: 1fr; }
+  .toggle-label { width: 100%; }
+  .libero-rotation-card { grid-template-columns: 1fr; }
+}

@@ -31,23 +31,21 @@
       </div>
 
       <div class="phase-group">
-        <span class="control-label">Serve Receive → Offense</span>
+        <span class="control-label">Rally Phase</span>
         <div class="segmented wide scrollable" id="modeButtons">
-          <button data-mode="receive" class="active">Serve Receive</button>
-          <button data-mode="set">Setter Release</button>
+          <button data-mode="serve" class="active">Serve</button>
+          <button data-mode="receive">Serve Receive</button>
           <button data-mode="base">Base</button>
           <button data-mode="attack_oh">Outside Hit</button>
           <button data-mode="attack_mb">Middle Hit</button>
           <button data-mode="attack_rs">Right Side Hit</button>
           <button data-mode="freeball">Free Ball</button>
-          <button data-mode="serve">Serve</button>
-          <button data-mode="recovery">Serve Recovery</button>
         </div>
       </div>
 
       <div class="flow-actions">
-        <button id="receiveFlowBtn" class="primary-btn">▶ Show Receive → Set → Base</button>
-        <button id="serveFlowBtn" class="secondary-btn">▶ Show Serve → Recovery</button>
+        <button id="receiveFlowBtn" class="primary-btn">▶ Show Serve Receive → Base</button>
+        <button id="serveFlowBtn" class="secondary-btn">▶ Show Serve → Base</button>
       </div>
     </section>
 
@@ -56,9 +54,9 @@
         <div class="court-topline">
           <div>
             <p class="eyebrow">Rotation <span id="rotationLabel">1</span></p>
-            <h2 id="modeTitle">Serve Receive</h2>
+            <h2 id="modeTitle">Serve</h2>
           </div>
-          <span class="legend-pill" id="modeHint">Hide the setter and build a clean passing shape.</span>
+          <span class="legend-pill" id="modeHint">Stack legally, serve, then release straight to base.</span>
         </div>
 
         <div class="court-wrap" id="courtWrap">
@@ -72,7 +70,7 @@
             <div class="zone-label z6">6</div>
             <div class="zone-label z1">1</div>
             <div class="attack-line"></div>
-            <div id="setTarget" class="set-target" hidden>SET TARGET</div>
+            <div id="setTarget" class="set-target" hidden>SETTER TARGET</div>
             <div class="player-layer" id="playerLayer"></div>
           </div>
           <div class="service-zone-label">SERVICE ZONE</div>
@@ -86,7 +84,7 @@
 
       <aside class="lesson-card card">
         <p class="eyebrow">What are we learning?</p>
-        <h2 id="lessonHeading">Serve Receive</h2>
+        <h2 id="lessonHeading">Serve</h2>
         <p id="lessonText"></p>
         <div class="mini-steps" id="lessonSteps"></div>
       </aside>
