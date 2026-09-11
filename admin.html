@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#0b1f3a" />
+  <title>Coach Admin — 6–2 Rotation Guide</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body class="admin-page">
+  <header class="site-header">
+    <div>
+      <p class="eyebrow">Coach Controls</p>
+      <h1>6–2 Rotation Admin</h1>
+      <p class="subtitle">Edit names and roles without touching the website code.</p>
+    </div>
+    <a class="admin-link" href="index.html">← Player View</a>
+  </header>
+
+  <main class="page-shell narrow">
+    <section id="pinGate" class="card pin-card">
+      <p class="eyebrow">Admin Mode</p>
+      <h2>Enter Coach PIN</h2>
+      <p>This is a convenience lock for a static GitHub Pages site, not bank-level security.</p>
+      <form id="pinForm" class="pin-form">
+        <input id="pinInput" type="password" inputmode="numeric" autocomplete="off" placeholder="Coach PIN" />
+        <button class="primary-btn" type="submit">Open Admin</button>
+      </form>
+      <p id="pinError" class="error-text" aria-live="polite"></p>
+    </section>
+
+    <div id="adminPanel" hidden>
+      <section class="card admin-settings">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Team Settings</p>
+            <h2>Display</h2>
+          </div>
+        </div>
+        <label>
+          Team / Page Name
+          <input id="teamNameInput" type="text" />
+        </label>
+      </section>
+
+      <section class="card roster-editor">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Starting Six</p>
+            <h2>Edit Player Names & Roles</h2>
+          </div>
+          <span class="legend-pill">Changes follow the lineup slot through all 6 rotations.</span>
+        </div>
+        <div class="roster-grid" id="rosterGrid"></div>
+      </section>
+
+      <section class="card admin-actions-card">
+        <div class="admin-actions">
+          <button id="saveBtn" class="primary-btn">Save Changes</button>
+          <button id="previewBtn" class="secondary-btn">Preview Player View</button>
+          <button id="resetBtn" class="danger-btn">Reset Demo Lineup</button>
+        </div>
+        <p id="saveStatus" class="save-status" aria-live="polite"></p>
+      </section>
+
+      <section class="card admin-note">
+        <h3>GitHub Pages note</h3>
+        <p>This version stores edits in the browser using <code>localStorage</code>. That means your saved names stay on this device/browser. For one coach device, this works immediately with GitHub Pages. To make one admin change update the site for every player on every phone, connect a small cloud database such as Firebase or Supabase.</p>
+      </section>
+    </div>
+  </main>
+
+  <script src="data.js"></script>
+  <script src="admin.js"></script>
+</body>
+</html>

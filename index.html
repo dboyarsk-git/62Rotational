@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#0b1f3a" />
+  <title>6–2 Volleyball Rotation Guide</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div>
+      <p class="eyebrow">Interactive Coaching Board</p>
+      <h1 id="teamTitle">6–2 Volleyball Rotation Guide</h1>
+      <p class="subtitle">Pick a rotation, choose a situation, then tap a player to learn her job.</p>
+    </div>
+    <a class="admin-link" href="admin.html">⚙ Coach Admin</a>
+  </header>
+
+  <main class="page-shell">
+    <section class="control-panel card">
+      <div class="control-row">
+        <div>
+          <span class="control-label">Rotation</span>
+          <div class="segmented" id="rotationButtons" aria-label="Rotation selector"></div>
+        </div>
+        <div>
+          <label class="control-label" for="playerFocus">Show me my job</label>
+          <select id="playerFocus"></select>
+        </div>
+      </div>
+
+      <div class="control-row situation-row">
+        <div>
+          <span class="control-label">Situation</span>
+          <div class="segmented wide" id="modeButtons">
+            <button data-mode="serve" class="active">Serve</button>
+            <button data-mode="recovery">Serve Recovery</button>
+            <button data-mode="freeball">Free Ball</button>
+          </div>
+        </div>
+        <button id="animateBtn" class="primary-btn">▶ Show Serve → Recovery</button>
+      </div>
+    </section>
+
+    <section class="court-layout">
+      <div class="court-card card">
+        <div class="court-topline">
+          <div>
+            <p class="eyebrow">Rotation <span id="rotationLabel">1</span></p>
+            <h2 id="modeTitle">Serve</h2>
+          </div>
+          <span class="legend-pill" id="modeHint">Stay in legal rotational order until contact.</span>
+        </div>
+
+        <div class="court-wrap" id="courtWrap">
+          <div class="opponent-label">OPPONENT</div>
+          <div class="net-line"><span>NET</span></div>
+          <div class="court" id="court">
+            <div class="zone-label z4">4</div>
+            <div class="zone-label z3">3</div>
+            <div class="zone-label z2">2</div>
+            <div class="zone-label z5">5</div>
+            <div class="zone-label z6">6</div>
+            <div class="zone-label z1">1</div>
+            <div class="attack-line"></div>
+            <div class="player-layer" id="playerLayer"></div>
+          </div>
+          <div class="service-zone-label">SERVICE ZONE</div>
+        </div>
+
+        <div class="selected-player" id="selectedPlayerCard">
+          <strong>Tap a player circle</strong>
+          <span>to see her job in this situation.</span>
+        </div>
+      </div>
+
+      <aside class="lesson-card card">
+        <p class="eyebrow">What are we learning?</p>
+        <h2 id="lessonHeading">Serving</h2>
+        <p id="lessonText">Start in legal rotational order. The player in Zone 1 serves from behind the end line.</p>
+        <div class="mini-steps" id="lessonSteps"></div>
+      </aside>
+    </section>
+
+    <section class="roles-section card">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">Position Lessons</p>
+          <h2>What is my job?</h2>
+        </div>
+        <p>These buttons highlight that position on the court.</p>
+      </div>
+
+      <div class="role-tabs" id="roleTabs">
+        <button data-role="S/RS">Right Side / Setter</button>
+        <button data-role="OH">Outside</button>
+        <button data-role="MB">Middle</button>
+        <button data-role="ALL" class="active">Show Everyone</button>
+      </div>
+
+      <div class="role-explanation" id="roleExplanation"></div>
+    </section>
+
+    <section class="why-card card">
+      <details>
+        <summary>Why do players start in one spot and move after the serve?</summary>
+        <p>Before the server contacts the ball, players must stay in the correct rotational order. Once the serve is contacted, players can release into the positions used by the team’s offense and defense. That is why a player’s <strong>rotational position</strong> may look different from her normal <strong>playing position</strong>.</p>
+      </details>
+    </section>
+  </main>
+
+  <footer>
+    <span>6–2 Rotation Teaching Tool</span>
+    <a href="admin.html">Coach Admin</a>
+  </footer>
+
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
