@@ -27,78 +27,85 @@ const MODE_COPY = {
   serve: {
     title: "Serve",
     hint: "Stack in legal order so everyone can release straight to base.",
-    heading: "Serving Stack",
-    text: "Before the serve, the five players on the court stack compactly while keeping their rotational relationships. The Zone 1 player serves from behind the end line. As soon as she contacts the ball, everyone releases directly to base.",
-    steps: ["Find legal rotation", "Stack compactly", "Zone 1 serves", "Release directly to base"]
+    heading: "Serving Formation",
+    text: "The serving team stays in rotational order until contact. The front row stacks tightly, the back row stays ordered, and the Zone 1 player serves from behind the end line. After contact, everyone releases directly to base.",
+    steps: ["Find legal order", "Front row stacks", "Zone 1 serves", "Release to base"]
   },
   receive: {
     title: "Serve Receive",
     hint: "Hide the setter, pass cleanly, then release to base.",
     heading: "Serve Receive",
-    text: "The setter stays out of the passing lane, then runs to the right sideline × 10-ft-line intersection after the pass. In Rotation 1, the outside in Zone 2 pulls back to help hide the setter.",
-    steps: ["Find legal receive spots", "Hide the setter", "Pass to target", "Setter runs to the intersection"]
+    text: "The back-row setter stays out of the passing lane. The front-row outside can pull back to help hide her, while the passers build a clean shape around the pass / set target.",
+    steps: ["Stay legal", "Hide the setter", "Build the passing lanes", "Pass to target"]
+  },
+  set: {
+    title: "Setter Release",
+    hint: "The setter releases between the middle and right side to set.",
+    heading: "Setter Release",
+    text: "As soon as the serve is controlled, the back-row setter releases to the target between the middle and right side. The hitters transition, then the team resets into defensive base.",
+    steps: ["Pass is controlled", "Setter releases", "Set from target", "Reset to base"]
   },
   base: {
     title: "Base",
-    hint: "Front row on the net; setter at the right sideline × 10-ft line.",
-    heading: "Base Positions",
-    text: "Base is the reset position. All three front-row players are shown on the net. The back-row setter stays at the right sideline and 10-ft-line intersection while the defenders balance behind the block.",
-    steps: ["Front row gets on the net", "Setter owns the intersection", "Back row balances", "Read the next hitter"]
+    hint: "Front row on the net; back row in defensive base.",
+    heading: "Defensive Base",
+    text: "All three front-row players begin tight to the net. The back-row outside starts at the left sideline / 10-ft-line intersection, the setter starts at the matching right-side intersection, and the middle-back defender stays deep in the middle.",
+    steps: ["OH / MB / RS on net", "Left defender at left base", "Setter at right base", "Middle back stays deep"]
   },
   attack_oh: {
     title: "Outside Hit",
-    hint: "Setter stays at target; defense shifts to cover the left-side attack.",
-    heading: "Outside Hitter Attack",
-    text: "The setter remains fixed at the right-side target. The outside attacks from the left pin. The left-back defender steps in shorter behind the outside while the other defenders adjust into coverage.",
-    steps: ["Setter stays at target", "Outside attacks left pin", "Left-back steps in", "Other defenders balance"]
+    hint: "Defend the opponent outside: block right and shift behind the block.",
+    heading: "Defense vs. Outside Hit",
+    text: "This is your defensive shape when the opponent OUTSIDE is attacking. The right-side blocker owns the pin, the middle closes to her, the left-front player releases off the net, and the back row shifts behind the block.",
+    steps: ["RS takes the pin", "Middle closes right", "OH releases off net", "Back row shifts"]
   },
   attack_mb: {
     title: "Middle Hit",
-    hint: "Setter stays at target; defenders pinch toward the middle.",
-    heading: "Middle Hitter Attack",
-    text: "The middle is the primary hitter. The setter stays at the same right-side intersection while the left-back defender pinches toward the middle and the rest of the back row closes in for coverage.",
-    steps: ["Setter stays at target", "Middle is primary", "Left-back pinches in", "Back row closes toward middle"]
+    hint: "Middle blocks; both pins release and the back row pinches in.",
+    heading: "Defense vs. Middle Hit",
+    text: "When the opponent middle attacks, your middle stays centered on the hitter. The pin players release into short defense while the back row protects the seams and deep middle.",
+    steps: ["Middle reads hitter", "Pins release", "Defenders pinch in", "Deep middle protects"]
   },
   attack_rs: {
     title: "Right Side Hit",
-    hint: "Setter stays at target; defense shifts toward the right-side attack.",
-    heading: "Right Side Hitter Attack",
-    text: "The right side attacks from the right pin while the setter remains at target. The left-back defender stays deeper and reads the cross-court ball while the other defenders shift toward the hitter.",
-    steps: ["Setter stays at target", "Right side attacks", "Left-back stays deeper", "Coverage shifts right"]
+    hint: "Defend the opponent right side: block left and shift behind the block.",
+    heading: "Defense vs. Right-Side Hit",
+    text: "This is the mirror of outside defense. The outside blocker owns the left pin, the middle closes left, the right-front player releases off the net, and the back row shifts behind the block.",
+    steps: ["OH takes the pin", "Middle closes left", "RS releases off net", "Back row shifts"]
   },
   freeball: {
     title: "Free Ball",
-    hint: "Call FREE, pass to target, and get hitters off the net to approach.",
+    hint: "Call FREE, pass to target, and get all hitters off the net to approach.",
     heading: "Free Ball",
-    text: "On a free ball, the setter gets to the same target. Back-row players build a passing shape while all three front-row hitters get off the net so they have room for a full approach.",
-    steps: ["Call “FREE!”", "Pass high to target", "Setter gets to intersection", "Hitters get off the net"]
+    text: "On a free ball, the setter gets to the pass / set target and the three front-row hitters get off the net so they can transition into full approaches. The back-row players balance the passing lanes.",
+    steps: ["Call FREE", "Setter gets to target", "Hitters get off net", "Pass and run offense"]
   }
 };
 
 const ROLE_COPY = {
   "S/RS": {
     title: "Setter / Right Side",
-    body: "In a 6–2, the back-row setter runs the offense. In base and every hitting option, she goes to the right sideline × 10-ft-line intersection. When that same player rotates to the front row, she becomes the right-side hitter/blocker while the other back-row setter runs the offense."
+    body: "In a 6–2, the back-row setter runs the offense. When that player rotates to the front row, she becomes the right-side blocker/hitter while the other back-row setter takes over setting."
   },
   OH: {
     title: "Outside Hitter",
-    body: "The outside helps in serve receive and attacks from the left pin. In Rotation 1, the outside in Zone 2 pulls back to help hide the setter before releasing into base and offense."
+    body: "The outside is a major serve-receive passer. In base she owns the left-front pin when front row or the left-side defensive base when back row, then adjusts based on which opponent hitter attacks."
   },
   MB: {
     title: "Middle",
-    body: "The middle owns the center of the net in base, blocks first, and becomes the quick attack option. Your libero can be assigned separately for each rotation in Coach Admin to replace the correct back-row player."
+    body: "The middle starts centered on the net, reads the opponent setter/hitter, and closes to either pin when needed. In the back row, this slot can be replaced by the libero or a DS."
   },
   DS: {
     title: "Defensive Specialist",
-    body: "A DS is a back-row passing and defensive specialist. In Coach Admin, link a DS to a starter and choose when she enters. Her defensive position then shifts with the hitter being attacked."
+    body: "A DS replaces a linked starter according to the automatic substitution rule in Coach Admin. Her bubble follows the defensive responsibility of the lineup slot she replaces."
   },
   LIB: {
     title: "Libero",
-    body: "The libero has her own bubble and her own six-rotation replacement map. In Coach Admin, choose exactly who she replaces in Rotation 1, Rotation 2, and so on; choose Off Court for rotations where she is out."
+    body: "The libero has her own navy bubble and can be assigned separately for every rotation in Coach Admin. Choose exactly who she replaces in Rotation 1, Rotation 2, and so on."
   },
   ALL: {
     title: "Whole Team",
-    body: "Go in order: Serve → Serve Receive → Base → Outside → Middle → Right Side → Free Ball. Tap any player to see her exact job, and use the rotation buttons to walk through all six rotations."
+    body: "Use the phases in order: Serve → Serve Receive → Base → defense against Outside / Middle / Right Side → Free Ball. The attack tabs describe YOUR defensive movement when that opponent hitter attacks."
   }
 };
 
@@ -106,8 +113,11 @@ function roleMatchesFilter(entry) {
   if (roleFilter === "ALL") return true;
   const displayedRole = entry.player.role;
   const systemRole = getSystemRole(entry.player, entry.zone);
-  if (roleFilter === "S/RS") return ["S/RS", "S", "RS"].includes(displayedRole) || ["S", "RS"].includes(systemRole);
-  return displayedRole === roleFilter || systemRole === roleFilter;
+  const formationRole = getFormationRole(entry);
+  if (roleFilter === "S/RS") {
+    return ["S/RS", "S", "RS"].includes(displayedRole) || ["S", "RS"].includes(systemRole) || ["S", "RS"].includes(formationRole);
+  }
+  return displayedRole === roleFilter || systemRole === roleFilter || formationRole === roleFilter;
 }
 
 function buildControls() {
@@ -133,88 +143,101 @@ function buildControls() {
     option.textContent = `${player.name} — ${getPositionLabel(player.role)}`;
     playerFocus.appendChild(option);
   });
-
-  if (config.libero) {
-    const option = document.createElement("option");
-    option.value = config.libero.id;
-    option.textContent = `${config.libero.name} — Libero`;
-    playerFocus.appendChild(option);
-  }
-
   (config.subs || []).forEach((sub) => {
     const option = document.createElement("option");
     option.value = sub.id;
     option.textContent = `${sub.name} — ${getPositionLabel(sub.role)} (Sub)`;
     playerFocus.appendChild(option);
   });
-  playerFocus.value = previousFocus || "";
+  if (config.libero) {
+    const option = document.createElement("option");
+    option.value = config.libero.id;
+    option.textContent = `${config.libero.name} — Libero`;
+    playerFocus.appendChild(option);
+  }
+  playerFocus.value = [...playerFocus.options].some((option) => option.value === previousFocus) ? previousFocus : "";
 }
 
-function coordsFor(entry, mode) {
-  if (mode === "serve") return getServeCoords(entry);
-  if (mode === "receive") return getServeReceiveCoords(entry, currentRotation);
+function coordsFor(entry, mode, activeCourt = []) {
+  if (mode === "serve") return getServeCoords(entry.zone);
+  if (mode === "receive") return getServeReceiveCoords(entry, activeCourt);
+  if (mode === "set") return getSetterReleaseCoords(entry);
   if (mode === "base") return getBaseCoords(entry);
-  if (mode === "attack_oh") return getAttackCoords(entry, "OH");
-  if (mode === "attack_mb") return getAttackCoords(entry, "MB");
-  if (mode === "attack_rs") return getAttackCoords(entry, "RS");
+  if (mode === "attack_oh") return getDefenseCoords(entry, "OH");
+  if (mode === "attack_mb") return getDefenseCoords(entry, "MB");
+  if (mode === "attack_rs") return getDefenseCoords(entry, "RS");
   if (mode === "freeball") return getFreeballCoords(entry);
   return getBaseCoords(entry);
 }
 
-function attackRoleForMode() {
-  if (currentMode === "attack_oh") return "OH";
-  if (currentMode === "attack_mb") return "MB";
-  if (currentMode === "attack_rs") return "RS";
-  return null;
-}
-
 function getActivePlayerInstruction(entry) {
-  const { player, starter, zone, isSub, substitutionType } = entry;
-  const role = getSystemRole(player, zone);
-  let subText = "";
-  if (isSub && substitutionType === "libero") subText = ` ${player.name} is the libero in for ${starter.name} this rotation.`;
-  else if (isSub) subText = ` ${player.name} is automatically in for ${starter.name}.`;
-  const base = `${player.name} is in Zone ${zone}.${subText}`;
+  const { player, starter, zone, isSub, isLibero } = entry;
+  const role = getFormationRole(entry);
+  const replacementText = isLibero
+    ? ` ${player.name} is the libero in for ${starter.name}.`
+    : isSub
+      ? ` ${player.name} is automatically in for ${starter.name}.`
+      : "";
+  const base = `${player.name} is in rotational Zone ${zone}.${replacementText}`;
 
   if (currentMode === "serve") {
-    if (zone === 1) return `${base} You are the server. Serve from behind the end line; after contact, go straight to base.`;
-    if (isFrontRow(zone)) return `${base} Stay in the compact serving stack near the net while keeping legal order. On contact, release straight to your net base.`;
-    return `${base} Stay stacked in legal back-row order. On the serve, release straight to base defense.`;
+    if (zone === 1) return `${base} Serve from behind the end line. After contact, release immediately to your normal base responsibility.`;
+    return `${base} Hold the compact serving stack until contact, then release straight to base.`;
   }
 
   if (currentMode === "receive") {
-    if (currentRotation === 1 && role === "S" && zone === 1) return `${base} Setter: stay hidden on the right. After the pass, run to the right sideline × 10-ft-line intersection.`;
-    if (currentRotation === 1 && role === "OH" && zone === 2) return `${base} Outside: pull back into serve receive to hide the setter. After the pass, release to left-front base.`;
-    if (role === "S") return `${base} Stay out of the passing lane. Once the ball is passed, run immediately to the right sideline × 10-ft-line intersection.`;
-    if (["OH", "DS", "LIB"].includes(role)) return `${base} Get balanced in the passing shape, call seams, and pass high toward setter target.`;
-    return `${base} Hold the receive relationship, then release quickly to base after the pass.`;
+    if (role === "S") return `${base} Stay hidden and OUT of the passing lane. Once the pass is controlled, release to the target between the middle and right side.`;
+    if (role === "OH") return `${base} Join the serve-receive shape, call seams, and pass toward the target.`;
+    if (role === "MB" && isFrontRow(zone)) return `${base} Stay near the middle/front relationship, then transition as soon as the pass is made.`;
+    if (role === "RS" && isFrontRow(zone)) return `${base} Stay near the right-front relationship and be ready to transition after the pass.`;
+    return `${base} Help hold the passing shape and communicate seams.`;
+  }
+
+  if (currentMode === "set") {
+    if (role === "S") return `${base} Release to the target between the middle and right side, square up, and set.`;
+    if (isFrontRow(zone)) return `${base} Transition off the net so you are available to attack.`;
+    return `${base} Balance behind the offense, then reset to defensive base.`;
   }
 
   if (currentMode === "base") {
-    if (role === "S") return `${base} Your base is the right sideline × 10-ft-line intersection. Stay here and read the next ball.`;
-    if (isFrontRow(zone)) return `${base} Get ON the net in your base position and be ready to block or transition.`;
-    if (zone === 5) return `${base} Start in left-back base. Your next move changes depending on which hitter gets the ball.`;
-    return `${base} Get balanced in back-row base and read the hitter.`;
+    if (isFrontRow(zone) && role === "OH") return `${base} Start on the LEFT pin at the net and read the opponent.`;
+    if (isFrontRow(zone) && role === "MB") return `${base} Start CENTERED on the net and read the opponent setter.`;
+    if (isFrontRow(zone) && role === "RS") return `${base} Start on the RIGHT pin at the net and read the opponent.`;
+    if (role === "S") return `${base} Start at the RIGHT sideline / 10-ft-line base.`;
+    if (role === "OH") return `${base} Start at the LEFT sideline / 10-ft-line base.`;
+    return `${base} Start deep middle and read the hitter.`;
   }
 
-  if (currentMode.startsWith("attack_")) {
-    const attackRole = attackRoleForMode();
-    const hitterName = attackRole === "OH" ? "outside" : attackRole === "MB" ? "middle" : "right side";
-    if (role === "S") return `${base} Stay at the right sideline × 10-ft-line target and set the ${hitterName}.`;
-    if (role === attackRole && isFrontRow(zone)) return `${base} You are the primary hitter—stay available at the net, transition, approach, and attack.`;
-    if (zone === 5) {
-      if (attackRole === "OH") return `${base} Left-back defense: step in shorter behind the outside hitter for coverage.`;
-      if (attackRole === "MB") return `${base} Left-back defense: pinch toward the middle to close the coverage gap.`;
-      return `${base} Left-back defense: stay deeper left and read the right-side hitter's cross-court ball.`;
-    }
-    return `${base} Adjust from base toward the ${hitterName} attack and be ready to cover.`;
+  if (currentMode === "attack_oh") {
+    if (isFrontRow(zone) && role === "RS") return `${base} The opponent outside is hitting: take the RIGHT pin block.`;
+    if (isFrontRow(zone) && role === "MB") return `${base} Close RIGHT to the pin blocker and form the block.`;
+    if (isFrontRow(zone) && role === "OH") return `${base} Release off the net into short / tip defense.`;
+    if (role === "S") return `${base} Shift deeper on the right behind the block.`;
+    if (role === "OH") return `${base} Shift into left-middle defensive coverage.`;
+    return `${base} Get deep cross-court behind the block.`;
+  }
+
+  if (currentMode === "attack_mb") {
+    if (isFrontRow(zone) && role === "MB") return `${base} Stay centered and block the opponent middle.`;
+    if (isFrontRow(zone)) return `${base} Release off the net into short defense.`;
+    if (role === "S") return `${base} Hold the right-side seam.`;
+    if (role === "OH") return `${base} Hold the left-side seam.`;
+    return `${base} Protect deep middle.`;
+  }
+
+  if (currentMode === "attack_rs") {
+    if (isFrontRow(zone) && role === "OH") return `${base} The opponent right side is hitting: take the LEFT pin block.`;
+    if (isFrontRow(zone) && role === "MB") return `${base} Close LEFT to the pin blocker and form the block.`;
+    if (isFrontRow(zone) && role === "RS") return `${base} Release off the net into short / tip defense.`;
+    if (role === "S") return `${base} Shift into right-middle defensive coverage.`;
+    if (role === "OH") return `${base} Hold the left-side defensive lane.`;
+    return `${base} Get deep cross-court behind the block.`;
   }
 
   if (currentMode === "freeball") {
-    if (role === "S") return `${base} Get to the right sideline × 10-ft-line target early and call for the pass.`;
-    if (["OH", "DS", "LIB"].includes(role) && !isFrontRow(zone)) return `${base} Help pass the free ball high to target, then move into coverage.`;
-    if (isFrontRow(zone)) return `${base} Get OFF the net so you have room for a full approach after the pass.`;
-    return `${base} Get balanced for the free-ball pass and coverage.`;
+    if (role === "S") return `${base} Get to the pass / set target early and call for the ball.`;
+    if (isFrontRow(zone)) return `${base} Get OFF the net to the 10-ft line so you have room for a full approach.`;
+    return `${base} Balance the passing lanes and send a high controlled pass to target.`;
   }
 
   return base;
@@ -223,12 +246,11 @@ function getActivePlayerInstruction(entry) {
 function renderPlayers() {
   const focusId = playerFocus.value;
   const activeCourt = getActiveCourt(config, currentRotation);
-  const primaryAttackRole = attackRoleForMode();
   playerLayer.innerHTML = "";
 
   activeCourt.forEach((entry) => {
-    const coords = coordsFor(entry, currentMode);
-    const { player, starter, zone, isSub, index, substitutionType } = entry;
+    const coords = coordsFor(entry, currentMode, activeCourt);
+    const { player, starter, zone, isSub, isLibero, index } = entry;
     const circle = document.createElement("button");
     circle.className = "player-circle";
     circle.style.left = `${coords.x}%`;
@@ -238,16 +260,13 @@ function renderPlayers() {
     circle.setAttribute("aria-label", `${player.name}, ${getPositionLabel(player.role)}, Zone ${zone}`);
 
     const focusMatchesSlot = focusId && (focusId === player.id || focusId === starter.id);
-    const dimForFocus = focusId && !focusMatchesSlot;
-    const dimForRole = !roleMatchesFilter(entry);
-    if (dimForFocus || dimForRole) circle.classList.add("dimmed");
+    if ((focusId && !focusMatchesSlot) || !roleMatchesFilter(entry)) circle.classList.add("dimmed");
     if (selectedPlayerId && (selectedPlayerId === player.id || selectedPlayerId === starter.id)) circle.classList.add("selected");
     if (focusMatchesSlot) circle.classList.add("selected");
     if (currentMode === "serve" && zone === 1) circle.classList.add("server");
     if (isSub) circle.classList.add("subbed-in");
-    if (substitutionType === "libero" || player.role === "LIB") circle.classList.add("libero-bubble");
-    if (currentMode === "receive" && currentRotation === 1 && getSystemRole(player, zone) === "S" && zone === 1) circle.classList.add("hidden-setter");
-    if (primaryAttackRole && getSystemRole(player, zone) === primaryAttackRole && isFrontRow(zone)) circle.classList.add("attack-target");
+    if (isLibero) circle.classList.add("libero-on-court");
+    if (currentMode === "receive" && getFormationRole(entry) === "S") circle.classList.add("hidden-setter");
 
     const systemRole = getSystemRole(player, zone);
     circle.innerHTML = `
@@ -255,8 +274,7 @@ function renderPlayers() {
       <span class="player-role">${escapeHtml(player.role)}</span>
       ${player.role === "S/RS" ? `<span class="system-role">Playing ${escapeHtml(systemRole)}</span>` : ""}
       <span class="zone-badge">${zone}</span>
-      ${substitutionType === "libero" ? '<span class="libero-badge">LIB</span>' : isSub ? '<span class="sub-badge">SUB</span>' : ""}
-      ${primaryAttackRole && systemRole === primaryAttackRole && isFrontRow(zone) ? '<span class="hitter-badge">HITTER</span>' : ""}
+      ${isLibero ? '<span class="lib-badge">LIB</span>' : isSub ? '<span class="sub-badge">SUB</span>' : ""}
     `;
 
     circle.addEventListener("click", () => {
@@ -280,35 +298,29 @@ function renderSelectedPlayer() {
   const activeCourt = getActiveCourt(config, currentRotation);
   const activeEntry = activeCourt.find((entry) => entry.player.id === focusId || entry.starter.id === focusId);
   const starter = config.players.find((player) => player.id === focusId);
-  const genericSub = (config.subs || []).find((player) => player.id === focusId);
+  const sub = (config.subs || []).find((player) => player.id === focusId);
   const isLiberoFocus = config.libero?.id === focusId;
 
   if (isLiberoFocus) {
-    const entryWhereActive = activeCourt.find((entry) => entry.substitutionType === "libero");
+    const entryWhereActive = activeCourt.find((entry) => entry.isLibero);
     if (!entryWhereActive) {
-      const replacementId = getLiberoReplacementId(config, currentRotation);
-      const linked = config.players.find((player) => player.id === replacementId);
-      const status = replacementId
-        ? `${config.libero.name} is assigned to replace ${linked?.name || "a starter"}, but that starter is not in a legal back-row libero position this rotation.`
-        : `${config.libero.name} is OFF COURT in Rotation ${currentRotation}.`;
-      selectedPlayerCard.innerHTML = `<div><strong>${escapeHtml(config.libero.name)} — Libero</strong><span>${escapeHtml(status)}</span></div>`;
+      selectedPlayerCard.innerHTML = `<div><strong>${escapeHtml(config.libero.name)} — Libero</strong><span>Off court in Rotation ${currentRotation}. Change her Rotation ${currentRotation} replacement in Coach Admin.</span></div>`;
       return;
     }
   }
 
-  if (genericSub) {
-    const entryWhereActive = activeCourt.find((entry) => entry.player.id === genericSub.id);
+  if (sub) {
+    const entryWhereActive = activeCourt.find((entry) => entry.player.id === sub.id);
     if (!entryWhereActive) {
-      const linked = config.players.find((player) => player.id === genericSub.linkedPlayerId);
-      const triggerText = genericSub.trigger === "front" ? "front row" : genericSub.trigger === "back" ? "back row" : "every rotation";
-      selectedPlayerCard.innerHTML = `<div><strong>${escapeHtml(genericSub.name)} — ${escapeHtml(getPositionLabel(genericSub.role))}</strong><span>Not on the court in this rotation. She is linked to ${escapeHtml(linked?.name || "a starter")} and enters when that player is in the ${escapeHtml(triggerText)}.</span></div>`;
+      const linked = config.players.find((player) => player.id === sub.linkedPlayerId);
+      const triggerText = sub.trigger === "front" ? "front row" : sub.trigger === "back" ? "back row" : "every rotation";
+      selectedPlayerCard.innerHTML = `<div><strong>${escapeHtml(sub.name)} — ${escapeHtml(getPositionLabel(sub.role))}</strong><span>Not on the court in this rotation. She is linked to ${escapeHtml(linked?.name || "a starter")} and enters when that player is in the ${escapeHtml(triggerText)}.</span></div>`;
       return;
     }
   }
 
-  if (starter && activeEntry && activeEntry.isSub && activeEntry.starter.id === starter.id) {
-    const replacementLabel = activeEntry.substitutionType === "libero" ? "libero" : "sub";
-    selectedPlayerCard.innerHTML = `<div><strong>${escapeHtml(starter.name)} — ${escapeHtml(getPositionLabel(starter.role))}</strong><span>${escapeHtml(activeEntry.player.name)} is the ${replacementLabel} in for her in Rotation ${currentRotation}.</span></div>`;
+  if (starter && activeEntry && (activeEntry.isSub || activeEntry.isLibero) && activeEntry.starter.id === starter.id) {
+    selectedPlayerCard.innerHTML = `<div><strong>${escapeHtml(starter.name)} — ${escapeHtml(getPositionLabel(starter.role))}</strong><span>${escapeHtml(activeEntry.player.name)} is in for her during Rotation ${currentRotation}.</span></div>`;
     return;
   }
 
@@ -318,14 +330,14 @@ function renderSelectedPlayer() {
 }
 
 function renderLesson() {
-  const copy = MODE_COPY[currentMode];
+  const copy = MODE_COPY[currentMode] || MODE_COPY.base;
   rotationLabel.textContent = currentRotation;
   modeTitle.textContent = copy.title;
   modeHint.textContent = copy.hint;
   lessonHeading.textContent = copy.heading;
   lessonText.textContent = copy.text;
   lessonSteps.innerHTML = copy.steps.map((step, index) => `<div><b>${index + 1}</b><span>${escapeHtml(step)}</span></div>`).join("");
-  setTarget.hidden = currentMode === "serve";
+  setTarget.hidden = !["receive", "set", "freeball"].includes(currentMode);
 }
 
 function renderRoleCopy() {
@@ -341,7 +353,7 @@ function render() {
   teamTitle.textContent = config.teamName || "6–2 Volleyball Rotation Guide";
   document.title = `${config.teamName || "6–2 Volleyball"} — Rotation ${currentRotation}`;
   buildControls();
-  if (selectedPlayerId) playerFocus.value = selectedPlayerId;
+  if (selectedPlayerId && [...playerFocus.options].some((option) => option.value === selectedPlayerId)) playerFocus.value = selectedPlayerId;
   renderLesson();
   renderRoleCopy();
   renderPlayers();
@@ -361,16 +373,14 @@ function stopAnimations() {
 function applyModeToExistingPlayers(mode) {
   currentMode = mode;
   const activeCourt = getActiveCourt(config, currentRotation);
-  const primaryAttackRole = attackRoleForMode();
   activeCourt.forEach((entry) => {
     const circle = playerLayer.querySelector(`[data-slot-index="${entry.index}"]`);
     if (!circle) return;
-    const coords = coordsFor(entry, currentMode);
+    const coords = coordsFor(entry, currentMode, activeCourt);
     circle.style.left = `${coords.x}%`;
     circle.style.top = `${coords.y}%`;
     circle.classList.toggle("server", currentMode === "serve" && entry.zone === 1);
-    circle.classList.toggle("hidden-setter", currentMode === "receive" && currentRotation === 1 && getSystemRole(entry.player, entry.zone) === "S" && entry.zone === 1);
-    circle.classList.toggle("attack-target", Boolean(primaryAttackRole && getSystemRole(entry.player, entry.zone) === primaryAttackRole && isFrontRow(entry.zone)));
+    circle.classList.toggle("hidden-setter", currentMode === "receive" && getFormationRole(entry) === "S");
   });
   [...modeButtons.querySelectorAll("button")].forEach((button) => {
     button.classList.toggle("active", button.dataset.mode === currentMode);
@@ -383,19 +393,20 @@ function runReceiveFlowAnimation() {
   stopAnimations();
   currentMode = "receive";
   render();
-  receiveFlowBtn.textContent = "Moving…";
-  animationTimers.push(setTimeout(() => applyModeToExistingPlayers("base"), 1400));
+  receiveFlowBtn.textContent = "Setter releasing…";
+  animationTimers.push(setTimeout(() => applyModeToExistingPlayers("set"), 1200));
+  animationTimers.push(setTimeout(() => applyModeToExistingPlayers("base"), 2700));
   animationTimers.push(setTimeout(() => {
     receiveFlowBtn.textContent = "↻ Play Again";
     animationTimers = [];
-  }, 2800));
+  }, 4100));
 }
 
 function runServeBaseAnimation() {
   stopAnimations();
   currentMode = "serve";
   render();
-  serveFlowBtn.textContent = "Moving…";
+  serveFlowBtn.textContent = "Serving…";
   animationTimers.push(setTimeout(() => applyModeToExistingPlayers("base"), 1100));
   animationTimers.push(setTimeout(() => {
     serveFlowBtn.textContent = "↻ Play Again";
@@ -436,11 +447,5 @@ playerFocus.addEventListener("change", () => {
 
 receiveFlowBtn.addEventListener("click", runReceiveFlowAnimation);
 serveFlowBtn.addEventListener("click", runServeBaseAnimation);
-
-window.addEventListener("storage", () => {
-  config = loadConfig();
-  selectedPlayerId = null;
-  render();
-});
 
 render();

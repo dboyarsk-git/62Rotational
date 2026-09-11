@@ -498,142 +498,83 @@ body {
   .flow-actions > button { width: 100%; }
 }
 
-/* v3 court system: fixed setter target + libero rotation map */
-.attack-line { top: 34%; }
-.attack-line::after {
-  content: "10 FT LINE";
-  position: absolute;
-  right: 8px;
-  top: 7px;
-  color: rgba(255,255,255,.72);
-  font-size: .52rem;
-  font-weight: 950;
-  letter-spacing: .08em;
-}
-
+/* v5 - Row 1 defensive system + rotation-by-rotation libero */
+.court::before { display: none !important; }
 .set-target {
-  left: 94%;
-  top: 34%;
-  min-width: 78px;
-  text-align: center;
-  transform: translate(-50%, -50%);
-  border-color: rgba(255,255,255,.95);
-  background: rgba(7,25,47,.86);
-  box-shadow: 0 5px 18px rgba(0,0,0,.18);
+  left: 66%;
+  top: 14%;
+  background: rgba(7, 25, 47, .82);
+  border-color: rgba(255, 255, 255, .9);
+  box-shadow: 0 6px 18px rgba(0,0,0,.18);
 }
 
-.player-circle.attack-target {
-  box-shadow: 0 12px 32px rgba(2,14,27,.3), 0 0 0 7px rgba(255,116,38,.22);
-}
-.hitter-badge {
-  position: absolute;
-  right: -11px;
-  bottom: -8px;
-  border-radius: 999px;
-  padding: 4px 7px;
-  background: var(--accent);
-  color: #251307;
-  border: 2px solid #fff;
-  font-size: .48rem;
-  font-weight: 950;
-  letter-spacing: .07em;
-}
-
-/* Libero gets a clearly different bubble from every other player. */
-.player-circle.libero-bubble,
-.player-circle.libero-bubble.selected {
-  background: linear-gradient(145deg, #0a2340, #061729);
+.player-circle.libero-on-court {
+  background: linear-gradient(145deg, #123f6b, #07192f);
   color: #fff;
-  border-color: #ff8a47;
-  outline-color: rgba(255,116,38,.25);
-  box-shadow: 0 12px 32px rgba(2,14,27,.38), 0 0 0 4px rgba(255,116,38,.15);
+  border-color: #ff7a2d;
+  border-style: double;
+  border-width: 6px;
+  box-shadow: 0 12px 28px rgba(2,14,27,.34), 0 0 0 3px rgba(255,122,45,.18);
 }
-.player-circle.libero-bubble .player-role { color: #ffc49e; opacity: 1; }
-.player-circle.libero-bubble .zone-badge {
-  background: linear-gradient(145deg, #ff914f, #ff6b19);
-  color: #261307;
+.player-circle.libero-on-court .player-role,
+.player-circle.libero-on-court .system-role { color: #ffd5bd; opacity: 1; }
+.player-circle.libero-on-court.selected {
+  background: linear-gradient(145deg, #123f6b, #07192f);
+  color: #fff;
+  outline-color: rgba(255,122,45,.34);
 }
-.libero-badge {
+.lib-badge {
   position: absolute;
   left: -9px;
   bottom: -6px;
   border-radius: 999px;
   padding: 4px 7px;
-  background: #fff;
-  color: var(--navy);
-  border: 2px solid var(--accent);
-  font-size: .48rem;
+  background: #ff7a2d;
+  color: #251307;
+  border: 2px solid #fff;
+  font-size: .5rem;
   font-weight: 950;
   letter-spacing: .08em;
 }
 
 .libero-editor { padding: 22px; }
-.libero-settings-row {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  align-items: end;
-  gap: 16px;
-  margin-bottom: 16px;
-}
-.libero-settings-row > label:not(.toggle-label),
-.libero-rotation-card label {
+.libero-name-label {
   display: grid;
   gap: 7px;
-  font-size: .8rem;
+  max-width: 380px;
+  margin-bottom: 16px;
+  font-size: .82rem;
   font-weight: 850;
   color: #59677a;
 }
-.toggle-label {
-  display: flex;
-  align-items: center;
-  gap: 9px;
-  min-height: 44px;
-  padding: 10px 13px;
-  border: 1px solid #dfe5ec;
-  border-radius: 12px;
-  background: #f8fafc;
-  color: var(--navy);
-  font-weight: 850;
-  white-space: nowrap;
-}
-.toggle-label input { width: auto; accent-color: var(--accent); }
 .libero-rotation-grid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 12px;
 }
 .libero-rotation-card {
   display: grid;
-  grid-template-columns: auto minmax(0, 1fr);
-  align-items: center;
-  gap: 13px;
+  gap: 10px;
   padding: 14px;
-  border: 1px solid rgba(7,25,47,.08);
+  border: 1px solid #e4e9f0;
   border-radius: 15px;
-  background: linear-gradient(180deg, #fbfcfd, #f5f8fb);
+  background: linear-gradient(180deg, #f9fbfd, #f4f7fa);
 }
-.libero-rotation-card > div {
+.libero-rotation-card > span {
   display: flex;
-  align-items: center;
-  gap: 8px;
-  min-width: 128px;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+  color: var(--navy);
 }
-.rotation-chip {
-  display: grid;
-  place-items: center;
-  width: 34px;
-  height: 34px;
-  border-radius: 50%;
-  background: var(--navy);
-  color: #fff;
-  border: 3px solid var(--accent);
-  font-size: .72rem;
-  font-weight: 950;
+.libero-rotation-card small {
+  color: var(--muted);
+  font-weight: 750;
 }
 
-@media (max-width: 700px) {
-  .libero-settings-row,
+@media (max-width: 760px) {
+  .libero-rotation-grid { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 520px) {
   .libero-rotation-grid { grid-template-columns: 1fr; }
-  .toggle-label { width: 100%; }
-  .libero-rotation-card { grid-template-columns: 1fr; }
 }

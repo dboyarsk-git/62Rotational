@@ -8,7 +8,6 @@ const adminPanel = document.getElementById("adminPanel");
 const teamNameInput = document.getElementById("teamNameInput");
 const rosterGrid = document.getElementById("rosterGrid");
 const liberoNameInput = document.getElementById("liberoNameInput");
-const liberoEnabledInput = document.getElementById("liberoEnabledInput");
 const liberoRotationGrid = document.getElementById("liberoRotationGrid");
 const subsGrid = document.getElementById("subsGrid");
 const addSubBtn = document.getElementById("addSubBtn");
@@ -42,9 +41,8 @@ function renderEditor() {
   config = loadConfig();
   teamNameInput.value = config.teamName || "";
   liberoNameInput.value = config.libero?.name || "Libero";
-  liberoEnabledInput.checked = config.libero?.enabled !== false;
   renderRoster();
-  renderLiberoMap();
+  renderLiberoRotations();
   renderSubs();
 }
 
@@ -68,30 +66,27 @@ function renderRoster() {
   });
 }
 
-function renderLiberoMap() {
+function getBackRowStarterOptions(rotation) {
+  return config.players
+    .map((player, index) => ({ player, zone: getZoneForPlayer(index, rotation) }))
+    .filter(({ zone }) => !isFrontRow(zone));
+}
+
+function renderLiberoRotations() {
   liberoRotationGrid.innerHTML = "";
   for (let rotation = 1; rotation <= 6; rotation += 1) {
-    const currentReplacement = config.libero?.replacements?.[String(rotation)] || "";
-    const backRowPlayers = config.players
-      .map((player, index) => ({ player, zone: getZoneForPlayer(index, rotation) }))
-      .filter(({ zone }) => !isFrontRow(zone));
-
-    const card = document.createElement("div");
-    card.className = "libero-rotation-card";
+    const selected = config.libero?.rotations?.[String(rotation)] || "";
+    const backRow = getBackRowStarterOptions(rotation);
     const options = [
       '<option value="">Off Court</option>',
-      ...backRowPlayers.map(({ player, zone }) => `<option value="${player.id}" ${currentReplacement === player.id ? "selected" : ""}>In for ${escapeHtml(player.name)} — Zone ${zone}</option>`)
+      ...backRow.map(({ player, zone }) => `<option value="${player.id}" ${selected === player.id ? "selected" : ""}>${escapeHtml(player.name)} — Zone ${zone}</option>`)
     ].join("");
 
+    const card = document.createElement("label");
+    card.className = "libero-rotation-card";
     card.innerHTML = `
-      <div>
-        <span class="rotation-chip">R${rotation}</span>
-        <strong>Rotation ${rotation}</strong>
-      </div>
-      <label>
-        Libero replaces…
-        <select class="libero-replacement-input" data-rotation="${rotation}">${options}</select>
-      </label>
+      <span><b>Rotation ${rotation}</b><small>Who comes OUT?</small></span>
+      <select class="libero-rotation-select" data-rotation="${rotation}">${options}</select>
     `;
     liberoRotationGrid.appendChild(card);
   }
@@ -100,7 +95,7 @@ function renderLiberoMap() {
 function renderSubs() {
   subsGrid.innerHTML = "";
   if (!config.subs.length) {
-    subsGrid.innerHTML = '<div class="empty-subs">No automatic DS/other substitutions yet. Tap <strong>+ Add Substitute</strong> to add one.</div>';
+    subsGrid.innerHTML = '<div class="empty-subs">No DS / automatic subs yet. Tap <strong>+ Add Substitute</strong> if you need one.</div>';
     return;
   }
 
@@ -152,13 +147,9 @@ function syncDraftFromInputs() {
     config.players[index].role = select.value;
   });
 
-  if (!config.libero) config.libero = cloneDefaultConfig().libero;
   config.libero.name = liberoNameInput.value.trim() || "Libero";
-  config.libero.role = "LIB";
-  config.libero.enabled = liberoEnabledInput.checked;
-  config.libero.replacements = config.libero.replacements || {};
-  document.querySelectorAll(".libero-replacement-input").forEach((select) => {
-    config.libero.replacements[String(select.dataset.rotation)] = select.value || null;
+  document.querySelectorAll(".libero-rotation-select").forEach((select) => {
+    config.libero.rotations[String(select.dataset.rotation)] = select.value;
   });
 
   document.querySelectorAll(".sub-name-input").forEach((input) => {
@@ -222,13 +213,13 @@ addSubBtn.addEventListener("click", () => {
   const starterId = config.players[0]?.id || "p1";
   config.subs.push({
     id: `sub_${Date.now()}_${Math.random().toString(16).slice(2)}`,
-    name: "New DS/Sub",
+    name: "New DS",
     role: "DS",
     linkedPlayerId: starterId,
     trigger: "back"
   });
   renderRoster();
-  renderLiberoMap();
+  renderLiberoRotations();
   renderSubs();
 });
 
@@ -239,16 +230,15 @@ subsGrid.addEventListener("click", (event) => {
   const index = Number(button.dataset.subIndex);
   config.subs.splice(index, 1);
   renderRoster();
-  renderLiberoMap();
+  renderLiberoRotations();
   renderSubs();
 });
 
 saveBtn.addEventListener("click", () => {
   syncDraftFromInputs();
   saveConfig(config);
-  config = loadConfig();
   renderEditor();
-  showStatus("Saved! Roster, libero rotation map, and substitutions are updated on this browser.");
+  showStatus("Saved! Names, DS rules, and libero rotation assignments are updated on this browser.");
 });
 
 previewBtn.addEventListener("click", () => {
@@ -258,7 +248,7 @@ previewBtn.addEventListener("click", () => {
 });
 
 resetBtn.addEventListener("click", () => {
-  const confirmed = window.confirm("Reset all names, positions, libero rotation choices, and substitutions to the demo lineup?");
+  const confirmed = window.confirm("Reset all names, positions, substitutions, and libero assignments to the demo lineup?");
   if (!confirmed) return;
   saveConfig(cloneDefaultConfig());
   renderEditor();

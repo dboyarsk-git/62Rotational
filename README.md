@@ -1,40 +1,29 @@
-# 6–2 Volleyball Rotation Guide
+# Volleyball 6–2 Rotation Guide — v5
 
-A static, mobile-friendly teaching site for a volleyball 6–2 system. It is designed to run on GitHub Pages.
+Static HTML/CSS/JavaScript site designed for GitHub Pages.
 
-## Current features
+## v5 updates
 
-- Six rotation selector
-- Rally phases in coaching order: Serve → Serve Receive → Base → Outside Hit → Middle Hit → Right Side Hit → Free Ball
-- Compact serving stack so players can release quickly to base after contact
-- Rotation 1 serve-receive pattern: hidden back-row setter + Zone 2 outside pulling back
-- Setter target fixed at the right sideline × 10-ft-line intersection in Base and every hitting option
-- All three front-row players visibly placed on the net in Base
-- Back-row/left-back coverage visibly changes for Outside, Middle, and Right Side attacks
-- Free-ball positioning with front-row hitters getting off the net to approach
-- Player-by-player job explanations
-- Setter/Right Side, Outside, Middle, DS, and Libero lessons
-- Coach Admin page with editable starter names and roles
-- Separate Libero Rotation Map: choose who the libero replaces in each of Rotations 1–6, or set her Off Court
-- Libero uses a visually different court bubble
-- Automatic DS/other substitute links: link a sub to a starter and choose Front Row, Back Row, or Always
-- Modern navy/orange visual design
-- No vertical center line on the court
+- Rotation 1 court positioning rebuilt from the coach's annotated reference.
+- Other rotations use the same role-based 6–2 logic as the lineup rotates.
+- Phase order is now: Serve → Serve Receive → Base → Outside Hit → Middle Hit → Right Side Hit → Free Ball.
+- Outside / Middle / Right Side modes now teach **team defense against the opponent hitter**, not your own hitter coverage.
+- Base puts all front-row players on the net, with left-side defense and setter at the 10-ft-line / sideline intersections.
+- Serve uses a compact legal-order stack and animates directly to Base.
+- Serve Receive hides the back-row setter and shows the pass/set target between the middle and right side.
+- Free Ball sends the setter to target and pulls the front row off the net for approaches.
+- Separate libero system: editable libero name plus Rotation 1–6 replacement selectors.
+- Libero uses a visually different navy/orange bubble.
+- DS / regular automatic substitution rules remain available.
 
-## Coach Admin
+## Admin
 
-Open `admin.html`. Default PIN: `6262`.
+Open `admin.html`.
 
-Roster edits are currently saved with browser `localStorage`. This works on GitHub Pages, but edits made on one device do not automatically sync to other devices. A cloud database such as Firebase or Supabase is needed for one coach edit to update every player phone automatically.
+Default PIN: `6262`
+
+Roster settings save in browser `localStorage`. Because GitHub Pages is static, edits on one device do not automatically sync to other devices.
 
 ## GitHub Pages
 
-Upload all files in this folder to the root of the repository. In GitHub:
-
-1. Settings → Pages
-2. Source: Deploy from a branch
-3. Branch: `main`
-4. Folder: `/ (root)`
-5. Save
-
-The site loads from `index.html`; Coach Admin is at `admin.html`.
+Upload the files in this folder to the root of your GitHub repository and keep Pages set to `main` / `(root)`.
