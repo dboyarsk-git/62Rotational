@@ -1,10 +1,19 @@
-# Supabase Setup — MS Thrill 6–2 v1
+# Supabase LIVE Sync Setup — v15
 
-1. Open the existing One way Volleyball Supabase project.
-2. Open SQL Editor → New query.
-3. Paste/run `supabase-schema.sql` from this folder.
-4. The script creates a separate roster record with slug `ms-thrill-62` and leaves your existing `qg-volleyball` record alone.
-5. Upload all website files to the new GitHub repository root and enable GitHub Pages.
+Your Project URL and publishable key are already filled in.
 
-The build is already configured to use the existing Supabase Project URL and publishable browser key.
-Coach PIN: `6262`.
+## One required database step
+1. Open Supabase Dashboard → **SQL Editor**.
+2. Open `supabase-schema.sql` from this folder.
+3. Paste the entire file into a new query and click **Run**.
+
+You can run the v15 SQL even if you already ran v8. It upgrades the database with a safe player-facing mirror table and Supabase Realtime support.
+
+## Then publish v15
+Upload all v15 files to the root of the existing GitHub Pages repository and commit them. The HTML now uses `?v=11` cache-busting on the CSS/JS, which helps computers stop holding onto an older build.
+
+## What the badge means
+- **LIVE • time** = connected to Supabase and listening for updates.
+- **SYNCING…** = loading the newest roster.
+- **LIVE unavailable • retrying** = Realtime dropped; the site still polls every 5 seconds as backup.
+- **LOCAL • not connected** = Supabase is not available, so that device is using its own browser storage.

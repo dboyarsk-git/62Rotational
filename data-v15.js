@@ -1,5 +1,5 @@
-const STORAGE_KEY = "volleyball62Config_v2";
-const LEGACY_STORAGE_KEY = "volleyball62Config_v1";
+const STORAGE_KEY = "volleyball62Config_ms_thrill_v2";
+const LEGACY_STORAGE_KEY = "volleyball62Config_ms_thrill_v1";
 const ADMIN_SESSION_KEY = "volleyball62AdminUnlocked";
 const ADMIN_PIN_SESSION_KEY = "volleyball62AdminCloudPin";
 
@@ -7,17 +7,17 @@ const DEFAULT_CONFIG = {
   teamName: "Queens Grant 6–2 Rotation Guide",
   adminPin: "6262",
   players: [
-    { id: "p1", name: "Ari", role: "S/RS" },
-    { id: "p2", name: "Emma", role: "OH" },
-    { id: "p3", name: "Aubriella", role: "MB" },
-    { id: "p4", name: "Sanaia", role: "S/RS" },
-    { id: "p5", name: "Leah", role: "OH" },
-    { id: "p6", name: "Jade", role: "MB" }
+    { id: "p1", name: "Eliza Teller", role: "S/RS" },
+    { id: "p2", name: "Hanna Michael", role: "OH" },
+    { id: "p3", name: "Annika Domaszewicz", role: "MB" },
+    { id: "p4", name: "Avery Valentin", role: "S/RS" },
+    { id: "p5", name: "Laura Cielinski", role: "OH" },
+    { id: "p6", name: "McKenna Mincey", role: "MB" }
   ],
   subs: [],
   libero: {
     id: "libero_1",
-    name: "Libero",
+    name: "Sophia Velez",
     role: "LIB",
     rotations: { "1": "", "2": "", "3": "", "4": "", "5": "", "6": "" }
   }

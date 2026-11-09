@@ -1,4 +1,4 @@
--- 6-2 Volleyball shared roster + LIVE sync setup for Supabase (MS Thrill v1)
+-- 6-2 Volleyball shared roster + LIVE sync setup for Supabase (v15)
 -- Run this entire file in Supabase Dashboard -> SQL Editor.
 -- Safe to run if you already ran an earlier volleyball schema.
 -- Default coach PIN for a brand-new setup: 6262
@@ -110,25 +110,21 @@ insert into public.volleyball_team_config (slug, config, pin_hash)
 values (
   'ms-thrill-62',
   '{
-    "teamName": "MS Thrill · 6–2 Rotation Guide",
+    "teamName": "Queens Grant 6–2 Rotation Guide",
     "players": [
-      {"id":"p1","name":"Eliza Teller","role":"S"},
-      {"id":"p2","name":"Hanna Michael","role":"RS"},
-      {"id":"p3","name":"Annika Domaszewicz","role":"MB"},
-      {"id":"p4","name":"Avery Valentin","role":"S"},
-      {"id":"p5","name":"Laura Cielinski","role":"OH"},
-      {"id":"p6","name":"McKenna Mincey","role":"MB"}
+      {"id":"p1","name":"Ari","role":"S/RS"},
+      {"id":"p2","name":"Emma","role":"OH"},
+      {"id":"p3","name":"Aubriella","role":"MB"},
+      {"id":"p4","name":"Sanaia","role":"S/RS"},
+      {"id":"p5","name":"Leah","role":"OH"},
+      {"id":"p6","name":"Jade","role":"MB"}
     ],
-    "subs": [
-      {"id":"sub_cecilia","name":"Cecilia Teller","role":"DS","linkedPlayerId":"p3","trigger":"back","setPattern":"all"},
-      {"id":"sub_lena","name":"Lena Tapia","role":"DS","linkedPlayerId":"p5","trigger":"back","setPattern":"odd"},
-      {"id":"sub_hannah","name":"Hannah Skvoretz","role":"DS","linkedPlayerId":"p5","trigger":"back","setPattern":"even"}
-    ],
+    "subs": [],
     "libero": {
       "id":"libero_1",
-      "name":"Sophia Velez",
+      "name":"Libero",
       "role":"LIB",
-      "rotations":{"1":"p6","2":"p6","3":"","4":"","5":"","6":"p6"}
+      "rotations":{"1":"","2":"","3":"","4":"","5":"","6":""}
     }
   }'::jsonb,
   extensions.crypt('6262', extensions.gen_salt('bf'))
