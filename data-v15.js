@@ -4,7 +4,7 @@ const ADMIN_SESSION_KEY = "volleyball62AdminUnlocked";
 const ADMIN_PIN_SESSION_KEY = "volleyball62AdminCloudPin";
 
 const DEFAULT_CONFIG = {
-  teamName: "Queens Grant 6–2 Rotation Guide",
+  teamName: "6–2 Rotation",
   adminPin: "6262",
   players: [
     { id: "p1", name: "Eliza Teller", role: "S/RS" },

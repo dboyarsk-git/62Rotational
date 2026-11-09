@@ -110,7 +110,7 @@ insert into public.volleyball_team_config (slug, config, pin_hash)
 values (
   'qg-volleyball',
   '{
-    "teamName": "Queens Grant 6–2 Rotation Guide",
+    "teamName": "6–2 Rotation",
     "players": [
       {"id":"p1","name":"Ari","role":"S/RS"},
       {"id":"p2","name":"Emma","role":"OH"},

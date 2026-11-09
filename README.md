@@ -1,4 +1,4 @@
-# MS Thrill 6–2 — v2
+# 6–2 Rotation — v3
 
 This build restores the complete original v15 website, including all animations and rotation logic.
 
