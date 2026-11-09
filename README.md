@@ -1,33 +1,26 @@
-# Volleyball 6–2 Rotation Guide — v15
+# MS Thrill 6–2 Rotation Website — v1
 
-GitHub Pages front end + Supabase shared roster.
+This is a separate, pre-filled build based on the finished 6–2 rotation website.
 
-### v15 changes
-- Final serve-receive adjustment: in Rotations 2 and 5, the setter now sits directly on the PASS / SET TARGET.
-- Rebuilt all six **Serve Receive** formations from the coach-marked `Fixed rotations.pdf`.
-- Rotations 1/4: Zone 2 pulls back to hide the Zone 1 setter.
-- Rotations 2/5: Zones 4-5-1 form the passing line with Zone 6 hidden.
-- Rotations 3/6: Zones 5 + 3 push up near the net; Zones 6-1-2 form the passing line.
-- Removed the unwanted vertical center line from the court.
-- Supabase LIVE sync settings from v15 are preserved.
-- Rotation 6 Serve Receive now mirrors Rotation 3: setter hidden up by the net, front-row outside pushed up at the net, and the S/RS in Zone 2 drops back toward Zone 1 to receive.
-- Added visible LIVE / sync badge.
-- Added Supabase Realtime roster updates with a 5-second polling fallback.
-- Added cache-busting so desktop browsers do not keep old JS/CSS after a GitHub update.
-- Rotation 3 Serve Receive: the back-row setter in Zone 5 pushes up near the net, the outside in Zone 3 pushes up with her, and the S/RS in Zone 2 drops toward Zone 1 to receive.
-- Keeps all prior rotation, DS, libero, admin, and Supabase settings.
+## Preloaded roster
+- Zone 1: Eliza Teller — Setter
+- Zone 2: Hanna Michael — Right Side (all-around)
+- Zone 3: Annika Domaszewicz — Middle
+- Zone 4: Avery Valentin — Setter
+- Zone 5: Laura Cielinski — Outside
+- Zone 6: McKenna Mincey — Middle
 
-Run `supabase-schema.sql` once in Supabase SQL Editor, then upload these files to the root of the GitHub Pages repository.
+## Automatic substitutions
+- Cecilia Teller (DS) replaces Annika whenever Annika is in the back row.
+- Lena Tapia (DS) replaces Laura in the back row during Sets 1, 3, and 5.
+- Hannah Skvoretz (DS) replaces Laura in the back row during Sets 2 and 4.
+- Sophia Velez (LIB) replaces McKenna when McKenna is in the back row (Rotations 1, 2, and 6).
+- Hanna stays all-around.
 
+The player page has a Set 1–5 selector so Lena/Hannah swap automatically.
 
-## v15 serve-receive correction
-Serve Receive is now driven by an explicit rotation/zone coordinate table from the coach's marked-up Fixed rotations sheet rather than generic role placement.
-- Rotations 1 & 4: passing line 5-6-2; Zone 1 setter hidden behind Zone 2.
-- Rotations 2 & 5: passing line 4-5-1; Zone 6 setter pushes up near the net/target.
-- Rotations 3 & 6: Zone 5 setter + Zone 3 outside push up; passing line 6-1-2.
+## Supabase
+This build uses the same Supabase project as the existing site but a separate team slug: `ms-thrill-62`.
+Run `supabase-schema.sql` once in the SQL Editor to create/seed the MS Thrill team record. It will not overwrite the other team slug.
 
-The header shows **BUILD v15**. If that badge is not visible after publishing, the browser/GitHub page is still serving an older build.
-
-
-## v15 Supabase sync repair
-If the page shows **SYNC ERROR** after the database setup, run `supabase-repair-v15.sql` once in Supabase SQL Editor. It safely re-applies the volleyball-only tables/functions/policies and forces PostgREST to reload its schema cache. v15 also falls back to reading `volleyball_team_public` directly if the read RPC is temporarily unavailable.
+Default Coach PIN: `6262`
