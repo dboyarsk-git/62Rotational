@@ -1,0 +1,19 @@
+{
+  "team": "MS Thrill",
+  "system": "6-2",
+  "startingCourt": {
+    "4": {"name": "Avery Valentin", "role": "Setter"},
+    "3": {"name": "Annika Domaszewicz", "role": "Middle Blocker"},
+    "2": {"name": "Hanna Michael", "role": "Right Side — all-around"},
+    "5": {"name": "Laura Cielinski", "role": "Outside Hitter"},
+    "6": {"name": "McKenna Mincey", "role": "Middle Blocker"},
+    "1": {"name": "Eliza Teller", "role": "Setter"}
+  },
+  "libero": {"name": "Sophia Velez", "for": ["Annika Domaszewicz", "McKenna Mincey"], "when": "back row"},
+  "substitutions": [
+    {"name": "Lena Tapia", "for": "Laura Cielinski", "when": "back row", "sets": "odd", "slot": "Laura DS"},
+    {"name": "Hannah Skvoretz", "for": "Laura Cielinski", "when": "back row", "sets": "even", "slot": "Laura DS"}
+  ],
+  "reserve": [{"name": "Cecilia Teller", "role": "Defensive Specialist", "assignment": "Unassigned: do not automatically replace an all-around player or setter"}],
+  "notes": ["Hanna Michael plays all around; do not automatically substitute her", "Avery Valentin and Eliza Teller are setters on opposite rotation positions", "Lena and Hannah Skvoretz share Laura's back-row substitution slot, alternating by set", "Libero substitutions depend on league rules and serving order"]
+}
